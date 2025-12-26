@@ -1,0 +1,21 @@
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let project = Project.project(
+    name: "{{ group }}FeatureAdd{{ group }}",
+    hasResources: false,
+    dependencies: [
+        .project(
+            target: "SharedCommonArchitecture",
+            path: .relativeToRoot("Shared/SharedCommonArchitecture")
+        ),
+        .project(
+            target: "SharedCommonDesignSystem",
+            path: .relativeToRoot("Shared/SharedCommonDesignSystem")
+        ),
+        .project(
+            target: "{{ group }}Interactor",
+            path: .relativeToRoot("{{ group }}/{{ group }}Interactor")
+        ),
+    ]
+)

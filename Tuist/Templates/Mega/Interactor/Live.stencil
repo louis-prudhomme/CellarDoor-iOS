@@ -1,0 +1,45 @@
+import Dependencies
+import SharedCommonInteractor
+import {{ group }}Repository
+
+extension {{ group }}Interactor {
+    static let live = {{ group }}Interactor(
+        fetchAll: {
+            @Dependency(\.{{ group | lowerFirstWord }}Repository) var repository
+
+            return await withInteractorResult(parser: {{ group }}InteractorError.init) { @MainActor in
+                try await repository.fetchAll().map { $0.toDomain() }
+            }
+        },
+        fetch: { id in
+            @Dependency(\.{{ group | lowerFirstWord }}Repository) var repository
+
+            return await withInteractorResult(parser: {{ group }}InteractorError.init) { @MainActor in
+                try await repository.fetch(id)
+            }.flatMap { entity in
+                guard let entity else {
+                    return .failure({{ group }}InteractorError.notFound)
+                }
+                return .success(entity.toDomain())
+            }
+        },
+        upsert: { domain in
+            @Dependency(\.{{ group | lowerFirstWord }}Repository) var repository
+
+            guard !domain.name.isEmpty else {
+                return .failure({{ group }}InteractorError.nameEmpty)
+            }
+
+            return await withInteractorResult(parser: {{ group }}InteractorError.init) {
+                try await repository.upsert(domain.toEntity())
+            }
+        },
+        delete: { id in
+            @Dependency(\.{{ group | lowerFirstWord }}Repository) var repository
+            
+            return await withInteractorResult(parser: {{ group }}InteractorError.init) {
+                try await repository.delete(id)
+            }
+        }
+    )
+}

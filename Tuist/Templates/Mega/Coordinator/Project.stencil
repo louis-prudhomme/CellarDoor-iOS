@@ -1,0 +1,30 @@
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let project = Project.project(
+    name: "{{ group }}Coordinator",
+    hasResources: false,
+    dependencies: [
+        .project(
+            target: "SharedCommonArchitecture",
+            path: .relativeToRoot("Shared/SharedCommonArchitecture")
+        ),
+        .project(
+            target: "{{ group }}FeatureList{{ group }}",
+            path: .relativeToRoot("{{ group }}/{{ group }}FeatureList{{ group }}")
+        ),
+        .project(
+            target: "{{ group }}FeatureAdd{{ group }}",
+            path: .relativeToRoot("{{ group }}/{{ group }}FeatureAdd{{ group }}")
+        ),
+    ]
+)
+
+/*
+Add to your App target's Project.swift to use this Coordinator:
+```swift
+.project(
+    target: "{{ group }}Coordinator",
+    path: .relativeToRoot("{{ group }}/{{ group }}Coordinator")
+),
+*/

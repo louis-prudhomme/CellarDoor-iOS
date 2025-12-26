@@ -1,0 +1,28 @@
+import Foundation
+import {{ group }}Domain
+import {{ group }}Repository
+
+// MARK: - Entity → Domain
+
+public extension {{ group }}Entity {
+    func toDomain() -> {{ group }} {
+        {{ group }}(
+            id: id,
+            name: name,
+            createdAt: createdAt
+        )
+    }
+}
+
+// MARK: - Domain → Entity
+
+public extension {{ group }} {
+    /// Creates a new Entity instance from this Domain model.
+    func toEntity() -> {{ group }}Entity {
+        {{ group }}Entity(
+            id: id,
+            name: name,
+            createdAt: createdAt
+        )
+    }
+}

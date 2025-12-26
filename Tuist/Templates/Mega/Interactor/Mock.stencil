@@ -1,0 +1,11 @@
+import Dependencies
+import SharedCommonInteractor
+
+extension {{ group }}Interactor {
+    static let mock = {{ group }}Interactor(
+        fetchAll: { fatalError("{{ group }}Interactor.fetchAll") },
+        fetch: { _ in fatalError("{{ group }}Interactor.fetch") },
+        upsert: { _ in fatalError("{{ group }}Interactor.upsert") },
+        delete: { _ in fatalError("{{ group }}Interactor.delete") }
+    )
+}

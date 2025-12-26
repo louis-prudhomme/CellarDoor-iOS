@@ -1,0 +1,24 @@
+import Dependencies
+import Foundation
+import SharedCommonPersistence
+import {{ group }}Entity
+
+// CRUD operations are already provided by BaseRepository
+
+public extension {{ group }}Repository {
+    static func live(
+        fetchAll: @escaping @MainActor @Sendable () async throws -> [{{ group }}Entity] = { [] },
+        fetch: @escaping @MainActor @Sendable (UUID) async throws -> {{ group }}Entity? = { _ in nil },
+        upsert: @escaping @MainActor @Sendable ({{ group }}Entity) async throws -> Void = { _ in },
+        delete: @escaping @MainActor @Sendable (UUID) async throws -> Void = { _ in }
+    ) -> {{ group }}Repository {
+        {{ group }}Repository(
+            base: .live(
+                fetchAll: fetchAll,
+                fetch: fetch,
+                upsert: upsert,
+                delete: delete
+            )
+        )
+    }
+}

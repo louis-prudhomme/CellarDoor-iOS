@@ -1,0 +1,22 @@
+import SharedCommonArchitecture
+import SwiftUI
+
+public struct {{ group }}Feature{{ name }}View: View {
+    let store: StoreOf<{{ group }}Feature{{ name }}>
+
+    public var body: some View {
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            VStack {
+                Text("{{ group }} {{ name }}")
+            }
+        }
+    }
+}
+
+#Preview {
+    {{ group }}Feature{{ name }}View(
+        store: Store(initialState: {{ group }}Feature{{ name }}.State()) {
+            {{ group }}Feature{{ name }}()
+        }
+    )
+}

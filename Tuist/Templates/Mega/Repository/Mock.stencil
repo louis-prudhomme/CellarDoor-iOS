@@ -1,0 +1,7 @@
+import Dependencies
+import Foundation
+import {{ group }}Entity
+
+public extension {{ group }}Repository {
+
+}

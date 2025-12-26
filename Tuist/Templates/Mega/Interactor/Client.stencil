@@ -1,0 +1,38 @@
+import Dependencies
+import Foundation
+import SharedCommonInteractor
+import {{ group }}Domain
+
+public struct {{ group }}Interactor: Sendable {
+    public var fetchAll: @Sendable () async -> Result<[{{ group }}], {{ group }}InteractorError>
+    public var fetch: @Sendable (UUID) async -> Result<{{ group }}, {{ group }}InteractorError>
+    public var upsert: @Sendable ({{ group }}) async -> VoidResult<{{ group }}InteractorError>
+    public var delete: @Sendable (UUID) async -> VoidResult<{{ group }}InteractorError>
+
+    public init(
+        fetchAll: @escaping @Sendable () async -> Result<[{{ group }}], {{ group }}InteractorError>,
+        fetch: @escaping @Sendable (UUID) async -> Result<{{ group }}, {{ group }}InteractorError>,
+        upsert: @escaping @Sendable ({{ group }}) async -> VoidResult<{{ group }}InteractorError>,
+        delete: @escaping @Sendable (UUID) async -> VoidResult<{{ group }}InteractorError>
+    ) {
+        self.fetchAll = fetchAll
+        self.fetch = fetch
+        self.upsert = upsert
+        self.delete = delete
+    }
+}
+
+// MARK: - Dependency Registration
+
+extension {{ group }}Interactor: DependencyKey {
+    public static let liveValue: {{ group }}Interactor = .live
+    public static let testValue: {{ group }}Interactor = .mock
+    public static let previewValue: {{ group }}Interactor = .mock
+}
+
+public extension DependencyValues {
+    var {{ group | lowerFirstWord }}Interactor: {{ group }}Interactor {
+        get { self[{{ group }}Interactor.self] }
+        set { self[{{ group }}Interactor.self] = newValue }
+    }
+}

@@ -1,0 +1,71 @@
+# file options
+
+--exclude Build,.build
+
+# format options
+
+--allman false
+--binarygrouping 4,8
+--commas inline
+--decimalgrouping 3,4
+--elseposition same-line
+--voidtype void
+--exponentcase lowercase
+--exponentgrouping disabled
+--fractiongrouping disabled
+--header strip
+--hexgrouping 4,8
+--hexliteralcase uppercase
+--ifdef outdent
+--indent 4
+--indentcase true
+--importgrouping testable-bottom
+--linebreaks lf
+--maxwidth 250
+--octalgrouping 4,8
+--operatorfunc spaced
+--patternlet hoist
+--ranges spaced
+--semicolons inline
+--stripunusedargs always
+--swiftversion 6.2
+--trimwhitespace always
+--shortoptionals except-properties
+--funcattributes prev-line
+--typeattributes prev-line
+--computedvarattrs same-line
+--storedvarattrs same-line
+--wraparguments preserve
+--wrapcollections before-first
+--wrapconditions after-first
+--wrapparameters before-first
+--wrapternary before-operators
+--propertytypes inferred
+
+# Optins
+--enable isEmpty
+--enable todos
+--enable blankLineAfterSwitchCase
+--enable blankLinesAfterGuardStatements
+--enable blankLinesBetweenImports
+--enable doccomments
+--enable emptyExtensions
+--enable environmentEntry
+--enable redundantProperty
+--enable sortSwitchCases
+--enable unusedPrivateDeclarations
+--enable numberFormatting
+--enable propertyTypes
+--enable strongifiedSelf
+--enable spaceInsideParens
+--enable spaceInsideGenerics
+--enable wrapenumcases
+--enable spaceInsideComments
+--enable spaceInsideBrackets
+--enable spaceInsideBraces
+--enable spaceAroundParens
+# Optouts
+# particularly ugly
+--disable wrapMultilineConditionalAssignment 
+# might cause errors
+--disable redundantReturn

@@ -1,0 +1,24 @@
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let project = Project.project(
+    name: "{{ group }}Entity",
+    hasResources: false,
+    hasTests: false,
+    dependencies: [
+        .project(
+            target: "SharedCommonPersistence",
+            path: .relativeToRoot("Shared/SharedCommonPersistence")
+        ),
+    ]
+)
+
+/*
+Don't forget to add this module to SharedCommonModelContainer dependencies in its Project.swift:
+```swift
+.project(
+    target: "{{ group }}Entity",
+    path: .relativeToRoot("{{ group }}/{{ group }}Entity")
+),
+```
+*/

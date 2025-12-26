@@ -1,0 +1,36 @@
+import Dependencies
+import Foundation
+import SwiftData
+import SharedCommonPersistence
+import {{ group }}Entity
+
+public struct {{ group }}Repository: Sendable {
+    public let base: BaseRepository<{{ group }}Entity>
+
+    // Add custom operations here as needed:
+    // public var fetchByCategory: @Sendable (String) async throws -> [{{ group }}Entity]
+}
+
+// MARK: - Convenience Accessors
+
+public extension {{ group }}Repository {
+    var fetchAll: @MainActor @Sendable () async throws -> [{{ group }}Entity] { base.fetchAll }
+    var fetch: @MainActor @Sendable (UUID) async throws -> {{ group }}Entity? { base.fetch }
+    var upsert: @MainActor @Sendable ({{ group }}Entity) async throws -> Void { base.upsert }
+    var delete: @MainActor @Sendable (UUID) async throws -> Void { base.delete }
+}
+
+// MARK: - Dependency Registration
+
+extension {{ group }}Repository: DependencyKey {
+    public static let liveValue = {{ group }}Repository(base: .live())
+    public static let testValue = {{ group }}Repository(base: .mock())
+    public static let previewValue = {{ group }}Repository(base: .mock())
+}
+
+public extension DependencyValues {
+    var {{ group | lowerFirstWord }}Repository: {{ group }}Repository {
+        get { self[{{ group }}Repository.self] }
+        set { self[{{ group }}Repository.self] = newValue }
+    }
+}

@@ -1,0 +1,35 @@
+import SharedCommonArchitecture
+import SwiftUI
+import {{ group }}FeatureAdd{{ group }}
+import {{ group }}FeatureList{{ group }}
+
+public struct {{ group }}CoordinatorView: View {
+    @Bindable var store: StoreOf<{{ group }}Coordinator>
+
+    public init(store: StoreOf<{{ group }}Coordinator>) {
+        self.store = store
+    }
+    
+    public var body: some View {
+        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+            {{ group }}FeatureList{{ group }}View(
+                store: store.scope(state: \.list, action: \.list)
+            )
+        } destination: { store in
+            switch store.case {
+                case let .add{{ group }}(store):
+                    {{ group }}FeatureAdd{{ group }}View(store: store)
+                @unknown default:
+                    Text("Unimplemented destination")
+            }
+        }
+    }
+}
+
+#Preview {
+    {{ group }}CoordinatorView(
+        store: Store(initialState: {{ group }}Coordinator.State()) {
+            {{ group }}Coordinator()
+        }
+    )
+}

@@ -1,0 +1,32 @@
+import SharedCommonArchitecture
+
+@Reducer
+public struct {{ group }}Feature{{ name }} {
+    @ObservableState
+    public struct State: Equatable {
+
+    }
+    
+    public enum Action: Equatable {
+        case something
+        
+        case delegate(Delegate)
+        
+        // Handled by the Coordinator
+        public enum Delegate: Equatable {
+            case popToRoot
+        }
+    }
+    
+    public var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            switch action {
+            case .something:
+                return .none
+                
+            case .delegate:
+                return .none
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+import Foundation
+import Dependencies
+
+public struct {{ group }}: Equatable, Identifiable, Sendable {
+    public let id: UUID
+    public let name: String
+    public let createdAt: Date
+
+    public init(id: UUID, name: String, createdAt: Date) {
+        self.id = id
+        self.name = name
+        self.createdAt = createdAt
+    }
+}
+
+public extension {{ group }} {
+    static func new(name: String) -> {{ group }} {
+        @Dependency(\.uuid) var uuid
+        @Dependency(\.date) var date
+
+        return {{ group }}(id: uuid(), name: name, createdAt: date())
+    }
+}

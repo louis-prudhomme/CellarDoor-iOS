@@ -1,0 +1,31 @@
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let project = Project.project(
+    name: "{{ group }}Common{{ name }}",
+    hasResources: false,
+    dependencies: [
+        // .external(name: "Dependencies"),
+        // .project(
+        //     target: "SharedCommonUtilities",
+        //     path: .relativeToRoot("Shared/SharedCommonUtilities")
+        // ),
+    ]
+)
+
+/*
+To use this common module, add this to your target's Project.swift:
+```swift
+.project(
+    target: "{{ group }}Common{{ name }}",
+    path: .relativeToRoot("{{ group }}/{{ group }}Common{{ name }}")
+),
+```
+Or alternatively, if used in another group, adjust the path accordingly:
+```swift
+.project(
+    target: "{{ group }}Common{{ name }}",
+    path: .relativeToRoot("{{ group }}/{{ group }}Common{{ name }}")
+),
+```
+*/

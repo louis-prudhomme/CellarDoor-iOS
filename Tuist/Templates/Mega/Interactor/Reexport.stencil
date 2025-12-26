@@ -1,0 +1,2 @@
+@_exported import {{ group }}Domain
+@_exported import SharedCommonInteractor

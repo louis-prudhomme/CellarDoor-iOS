@@ -1,0 +1,5 @@
+import Foundation
+
+public struct {{ group }}Common{{ name }}: Equatable, Sendable {
+    let snout = "🐽"
+}

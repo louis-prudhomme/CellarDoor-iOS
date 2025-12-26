@@ -1,0 +1,32 @@
+import ProjectDescription
+import ProjectDescriptionHelpers
+
+let project = Project.project(
+    name: "{{ group }}Feature{{ name }}",
+    hasResources: false,
+    dependencies: [
+        .project(
+            target: "SharedCommonArchitecture",
+            path: .relativeToRoot("Shared/SharedCommonArchitecture")
+        ),
+        /*
+        .project(
+            target: "SharedCommonUtilities",
+            path: .relativeToRoot("Shared/SharedCommonUtilities")
+        ),
+        */
+        .project(
+            target: "SharedCommonDesignSystem",
+            path: .relativeToRoot("Shared/SharedCommonDesignSystem")
+        )
+    ],
+)
+
+/*
+To use this feature in a Coordinator, add this to the Coordinator's Project.swift:
+```swift
+.project(
+    target: "{{ group }}Feature{{ name }}",
+    path: .relativeToRoot("{{ group }}/{{ group }}Feature{{ name }}")
+),
+*/

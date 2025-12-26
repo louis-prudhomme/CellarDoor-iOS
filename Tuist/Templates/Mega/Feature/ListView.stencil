@@ -1,0 +1,50 @@
+import SharedCommonArchitecture
+import SharedCommonDesignSystem
+import SwiftUI
+
+public struct {{ group }}FeatureList{{ group }}View: View {
+    @Bindable var store: StoreOf<{{ group }}FeatureList{{ group }}>
+
+    public init(store: StoreOf<{{ group }}FeatureList{{ group }}>) {
+        self.store = store
+    }
+
+    public var body: some View {
+        VStack {
+            if store.isLoading {
+                ProgressView()
+            } else {
+                List {
+                    ForEach(store.{{ group | lowerFirstWord }}s) { {{ group | lowerFirstWord }} in
+                        Text("\({{ group | lowerFirstWord }}.name)")
+                    }
+                }
+            }
+        }
+        .alert($store.scope(state: \.alert, action: \.alert))
+        .task { store.send(.screenAppeared) }
+        .refreshable { store.send(.screenPulled) }
+        .navigationTitle("{{ group }}s")
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button("Return to Root", systemImage: "xmark") {
+                    store.send(.delegate(.popToRoot))
+                }
+            }
+
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Add a {{ group | lowerFirstWord }}", systemImage: "plus") {
+                    store.send(.delegate(.addButtonTapped))
+                }
+            }
+        }
+    }
+}
+
+#Preview {
+    {{ group }}FeatureList{{ group }}View(
+        store: Store(initialState: {{ group }}FeatureList{{ group }}.State()) {
+            {{ group }}FeatureList{{ group }}()
+        }
+    )
+}

@@ -1,0 +1,36 @@
+import SharedCommonArchitecture
+import SharedCommonDesignSystem
+import SwiftUI
+
+public struct {{ group }}FeatureAdd{{ group }}View: View {
+    @Bindable var store: StoreOf<{{ group }}FeatureAdd{{ group }}>
+
+    public init(store: StoreOf<{{ group }}FeatureAdd{{ group }}>) {
+        self.store = store
+    }
+
+    public var body: some View {
+        VStack(alignment: .center) {
+            Spacer()
+
+            TextField("Enter {{ group }} Name", text: $store.name)
+                .textFieldStyle(.roundedBorder)
+                .padding()
+
+            CellarButton("Add {{ group }}", systemImage: "plus", isLoading: store.isLoading) {
+                store.send(.submitButtonTapped)
+            }
+            .buttonStyle(.borderedProminent)
+        }
+        .alert($store.scope(state: \.alert, action: \.alert))
+        .navigationTitle("Add a {{ group | lowerFirstWord }}")
+    }
+}
+
+#Preview {
+    {{ group }}FeatureAdd{{ group }}View(
+        store: Store(initialState: {{ group }}FeatureAdd{{ group }}.State()) {
+            {{ group }}FeatureAdd{{ group }}()
+        }
+    )
+}

@@ -1,0 +1,70 @@
+import SharedCommonArchitecture
+import {{ group }}Domain
+import {{ group }}Interactor
+
+@Reducer
+public struct {{ group }}FeatureList{{ group }} {
+    @ObservableState
+    public struct State: Equatable {
+        var {{ group | lowerFirstWord }}s = [{{ group }}]()
+        var isLoading: Bool = false
+
+        @Presents var alert: AlertState<Never>?
+
+        public init() {}
+    }
+    
+    public enum Action: Equatable {
+        case screenAppeared
+        case screenPulled
+        case alertDismissed
+        case {{ group | lowerFirstWord }}Loaded(Result<[{{ group }}], {{ group }}InteractorError>)
+        
+        case alert(PresentationAction<Never>)
+        case delegate(Delegate)
+
+        public enum Delegate: Equatable {
+            case addButtonTapped
+            case popToRoot
+        }
+    }
+
+    public init() {}
+
+    @Dependency(\.{{ group | lowerFirstWord }}Interactor.fetchAll) var fetchAll
+    
+    public var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            switch action {
+                case .screenAppeared, .screenPulled:
+                    state.{{ group | lowerFirstWord }}s.removeAll()
+                    state.isLoading = true
+                    return .run { [fetchAll] send in
+                        await send(.{{ group | lowerFirstWord }}Loaded(await fetchAll()))
+                    }
+
+                case .alertDismissed:
+                    state.alert = nil
+                    return .none
+
+                case .{{ group | lowerFirstWord }}Loaded(.success(let {{ group | lowerFirstWord }}s)):
+                    state.isLoading = false
+                    state.{{ group | lowerFirstWord }}s = {{ group | lowerFirstWord }}s
+                    return .none
+
+                case .{{ group | lowerFirstWord }}Loaded(.failure(let error)):
+                    state.isLoading = false
+                    state.alert = AlertState {
+                        TextState(error.localizedDescription)
+                    }
+                    return .none
+
+                case .alert:
+                    return .none
+
+                case .delegate:
+                    return .none
+            }
+        }
+    }
+}

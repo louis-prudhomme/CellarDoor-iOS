@@ -1,0 +1,34 @@
+import SwiftData
+import Foundation
+import SharedCommonPersistence
+
+// Warning: Add every new entity in the schema declaration in SharedCommonModelContainer
+
+@Model
+public final class {{ group }}Entity: IdentifiableEntity {
+    @Attribute(.unique) public var id: UUID
+    @Attribute public var name: String
+    @Attribute public var createdAt: Date
+
+    public init(id: UUID, name: String, createdAt: Date) {
+        self.id = id
+        self.name = name
+        self.createdAt = createdAt
+    }
+    
+    public static func idPredicate(for id: UUID) -> Predicate<{{ group }}Entity> {
+        #Predicate<{{ group }}Entity> { $0.id == id }
+    }
+}
+
+public extension {{ group }}Entity {
+    static func new(id: UUID, name: String, createdAt: Date) -> {{ group }}Entity {
+        return {{ group }}Entity(id: id, name: name, createdAt: createdAt)
+    }
+    
+    func update(from entity: {{ group }}Entity) {
+        // id is immutable, no update needed
+        name = entity.name
+        createdAt = entity.createdAt
+    }
+}

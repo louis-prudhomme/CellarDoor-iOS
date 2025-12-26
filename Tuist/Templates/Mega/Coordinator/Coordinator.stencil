@@ -1,0 +1,55 @@
+import SharedCommonArchitecture
+import {{ group }}FeatureList{{ group }}
+import {{ group }}FeatureAdd{{ group }}
+
+@Reducer
+public struct {{ group }}Coordinator {
+    @ObservableState
+    public struct State: Equatable {
+        var list = {{ group }}FeatureList{{ group }}.State()
+        var path = StackState<Path.State>()
+
+        public init() {}
+    }
+    
+    public enum Action {
+        case list({{ group }}FeatureList{{ group }}.Action)
+        case path(StackActionOf<Path>)
+    }
+    
+    // MARK: - Destinations
+    @Reducer
+    public enum Path {
+        case add{{ group }}({{ group }}FeatureAdd{{ group }})
+    }
+
+    @Dependency(\.dismiss) var dismiss
+
+    public init() {}
+    
+    public var body: some ReducerOf<Self> {
+        Scope(state: \.list, action: \.list) {
+            {{ group }}FeatureList{{ group }}()
+        }
+        
+        Reduce { state, action in
+            switch action {
+                // MARK: - List Actions
+                case .list(.delegate(.addButtonTapped)):
+                    state.path.append(.add{{ group }}({{ group }}FeatureAdd{{ group }}.State()))
+                    return .none
+                
+                // MARK: - Leaf Actions
+                case .list(.delegate(.popToRoot)):
+                    return .run { [dismiss] _ in await dismiss() }
+                
+                default:
+                    return .none
+            }
+        }
+        .forEach(\.path, action: \.path)
+    }
+}
+
+// Necessary to make StackState work
+extension {{ group }}Coordinator.Path.State: Equatable {}

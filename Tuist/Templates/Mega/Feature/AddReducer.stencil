@@ -1,0 +1,66 @@
+import SharedCommonArchitecture
+import {{ group }}Domain
+import {{ group }}Interactor
+
+@Reducer
+public struct {{ group }}FeatureAdd{{ group }} {
+    @ObservableState
+    public struct State: Equatable {
+        var name: String = ""
+        var isLoading: Bool = false
+
+        @Presents var alert: AlertState<Never>?
+
+        public init() {}
+    }
+
+    public enum Action: BindableAction, Equatable {
+        case submitButtonTapped
+        case {{ group | lowerFirstWord }}Added(VoidResult<{{ group }}InteractorError>)
+
+        case alert(PresentationAction<Never>)
+        case binding(BindingAction<State>)
+        
+        case delegate(Delegate)
+        public enum Delegate: Equatable {}
+    }
+
+    public init() {}
+
+    @Dependency(\.dismiss) var dismiss
+    @Dependency(\.{{ group | lowerFirstWord }}Interactor.upsert) var upsert
+
+    public var body: some ReducerOf<Self> {
+        BindingReducer()
+
+        Reduce { state, action in
+            switch action {
+                case .submitButtonTapped:
+                    return .run { [upsert, name = state.name] send in
+                        let {{ group | lowerFirstWord }} = {{ group }}.new(name: name)
+                        await send(.{{ group | lowerFirstWord }}Added(await upsert({{ group | lowerFirstWord }})))
+                    }
+
+                case .{{ group | lowerFirstWord }}Added(.failure(let error)):
+                    state.isLoading = false
+                    state.alert = AlertState {
+                        TextState(error.localizedDescription)
+                    }
+                    return .none
+
+                case .{{ group | lowerFirstWord }}Added(.success):
+                    state.isLoading = false
+                    return .run { [dismiss] _ in await dismiss() }
+
+                case .alert:
+                    return .none
+
+                case .binding:
+                    return .none
+
+                case .delegate:
+                    return .none
+            }
+        }
+    }
+}
