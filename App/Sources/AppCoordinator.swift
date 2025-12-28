@@ -12,19 +12,25 @@ public struct AppCoordinator {
 
     public enum Action {
         case destination(PresentationAction<Destination.Action>)
+        case navigateToWines
     }
 
     public init() {}
 
     @Reducer
     public enum Destination {
+        case wines(WineCoordinator)
     }
 
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-                case .destination:
-                    return .none
+            case .navigateToWines:
+                state.destination = .wines(WineCoordinator.State())
+                return .none
+
+            case .destination:
+                return .none
             }
         }
         .ifLet(\.$destination, action: \.destination)

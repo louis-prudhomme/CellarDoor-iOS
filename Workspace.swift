@@ -6,5 +6,6 @@ let workspace = Workspace(
         "./App",
         "./Shared/**",
         // Mega
+        "./Wine/**"
     ]
 )

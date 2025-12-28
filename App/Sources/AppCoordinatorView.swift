@@ -11,10 +11,14 @@ public struct AppCoordinatorView: View {
 
     public var body: some View {
         VStack {
-            EmptyView()
+            Button("Go to wines") {
+                store.send(.navigateToWines)
+            }
         }
         .fullScreenCover(item: $store.scope(state: \.destination, action: \.destination)) { store in
             switch store.case {
+                case let .wines(store):
+                    WineCoordinatorView(store: store)
                 @unknown default:
                     Text("Unknown destination")
             }

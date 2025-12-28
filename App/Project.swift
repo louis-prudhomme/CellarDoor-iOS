@@ -13,5 +13,9 @@ let project = Project.app(
             path: .relativeToRoot("Shared/SharedCommonModelContainer")
         ),
         // Coordinators
+        .project(
+            target: "WineCoordinator",
+            path: .relativeToRoot("Wine/WineCoordinator")
+        )
     ]
 )

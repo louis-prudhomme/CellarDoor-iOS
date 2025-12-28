@@ -12,6 +12,10 @@ let project = Project.project(
             path: .relativeToRoot("Shared/SharedCommonPersistence")
         ),
         // Entity dependencies
+        .project(
+            target: "WineEntity",
+            path: .relativeToRoot("Wine/WineEntity")
+        ),
     ]
 )
 
