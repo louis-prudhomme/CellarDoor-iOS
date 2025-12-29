@@ -1,7 +1,7 @@
 import Foundation
 import Dependencies
 
-public struct Wine: Equatable, Identifiable, Sendable {
+public struct WineBottle: Equatable, Identifiable, Sendable {
     public let id: UUID
     public let name: String
     public let createdAt: Date
@@ -13,11 +13,11 @@ public struct Wine: Equatable, Identifiable, Sendable {
     }
 }
 
-public extension Wine {
-    static func new(name: String) -> Wine {
+public extension WineBottle {
+    static func new(name: String) -> WineBottle {
         @Dependency(\.uuid) var uuid
         @Dependency(\.date) var date
 
-        return Wine(id: uuid(), name: name, createdAt: date())
+        return WineBottle(id: uuid(), name: name, createdAt: date())
     }
 }

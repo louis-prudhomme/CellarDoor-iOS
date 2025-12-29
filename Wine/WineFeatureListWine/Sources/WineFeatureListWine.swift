@@ -6,7 +6,7 @@ import WineInteractor
 public struct WineFeatureListWine {
     @ObservableState
     public struct State: Equatable {
-        var wines = [Wine]()
+        var wines = [WineBottle]()
         var isLoading: Bool = false
 
         @Presents var alert: AlertState<Never>?
@@ -18,8 +18,8 @@ public struct WineFeatureListWine {
         case screenAppeared
         case screenPulled
         case alertDismissed
-        case wineLoaded(Result<[Wine], WineInteractorError>)
-        
+        case wineLoaded(Result<[WineBottle], WineInteractorError>)
+
         case alert(PresentationAction<Never>)
         case delegate(Delegate)
 

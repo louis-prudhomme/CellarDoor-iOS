@@ -5,7 +5,7 @@ import SharedCommonPersistence
 // Warning: Add every new entity in the schema declaration in SharedCommonModelContainer
 
 @Model
-public final class WineEntity: IdentifiableEntity {
+public final class WineBottleEntity: IdentifiableEntity {
     @Attribute(.unique) public var id: UUID
     @Attribute public var name: String
     @Attribute public var createdAt: Date
@@ -16,17 +16,17 @@ public final class WineEntity: IdentifiableEntity {
         self.createdAt = createdAt
     }
     
-    public static func idPredicate(for id: UUID) -> Predicate<WineEntity> {
-        #Predicate<WineEntity> { $0.id == id }
+    public static func idPredicate(for id: UUID) -> Predicate<WineBottleEntity> {
+        #Predicate<WineBottleEntity> { $0.id == id }
     }
 }
 
-public extension WineEntity {
-    static func new(id: UUID, name: String, createdAt: Date) -> WineEntity {
-        return WineEntity(id: id, name: name, createdAt: createdAt)
+public extension WineBottleEntity {
+    static func new(id: UUID, name: String, createdAt: Date) -> WineBottleEntity {
+        return WineBottleEntity(id: id, name: name, createdAt: createdAt)
     }
     
-    func update(from entity: WineEntity) {
+    func update(from entity: WineBottleEntity) {
         // id is immutable, no update needed
         name = entity.name
         createdAt = entity.createdAt

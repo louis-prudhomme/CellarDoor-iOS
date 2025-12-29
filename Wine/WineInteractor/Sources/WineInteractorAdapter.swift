@@ -4,9 +4,9 @@ import WineRepository
 
 // MARK: - Entity → Domain
 
-public extension WineEntity {
-    func toDomain() -> Wine {
-        Wine(
+public extension WineBottleEntity {
+    func toDomain() -> WineBottle {
+        WineBottle(
             id: id,
             name: name,
             createdAt: createdAt
@@ -16,10 +16,10 @@ public extension WineEntity {
 
 // MARK: - Domain → Entity
 
-public extension Wine {
+public extension WineBottle {
     /// Creates a new Entity instance from this Domain model.
-    func toEntity() -> WineEntity {
-        WineEntity(
+    func toEntity() -> WineBottleEntity {
+        WineBottleEntity(
             id: id,
             name: name,
             createdAt: createdAt

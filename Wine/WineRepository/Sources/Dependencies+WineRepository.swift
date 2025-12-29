@@ -5,18 +5,18 @@ import SharedCommonPersistence
 import WineEntity
 
 public struct WineRepository: Sendable {
-    public let base: BaseRepository<WineEntity>
+    public let base: BaseRepository<WineBottleEntity>
 
     // Add custom operations here as needed:
-    // public var fetchByCategory: @Sendable (String) async throws -> [WineEntity]
+    // public var fetchByCategory: @Sendable (String) async throws -> [WineBottleEntity]
 }
 
 // MARK: - Convenience Accessors
 
 public extension WineRepository {
-    var fetchAll: @MainActor @Sendable () async throws -> [WineEntity] { base.fetchAll }
-    var fetch: @MainActor @Sendable (UUID) async throws -> WineEntity? { base.fetch }
-    var upsert: @MainActor @Sendable (WineEntity) async throws -> Void { base.upsert }
+    var fetchAll: @MainActor @Sendable () async throws -> [WineBottleEntity] { base.fetchAll }
+    var fetch: @MainActor @Sendable (UUID) async throws -> WineBottleEntity? { base.fetch }
+    var upsert: @MainActor @Sendable (WineBottleEntity) async throws -> Void { base.upsert }
     var delete: @MainActor @Sendable (UUID) async throws -> Void { base.delete }
 }
 

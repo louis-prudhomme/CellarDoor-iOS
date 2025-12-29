@@ -4,15 +4,15 @@ import SharedCommonInteractor
 import WineDomain
 
 public struct WineInteractor: Sendable {
-    public var fetchAll: @Sendable () async -> Result<[Wine], WineInteractorError>
-    public var fetch: @Sendable (UUID) async -> Result<Wine, WineInteractorError>
-    public var upsert: @Sendable (Wine) async -> VoidResult<WineInteractorError>
+    public var fetchAll: @Sendable () async -> Result<[WineBottle], WineInteractorError>
+    public var fetch: @Sendable (UUID) async -> Result<WineBottle, WineInteractorError>
+    public var upsert: @Sendable (WineBottle) async -> VoidResult<WineInteractorError>
     public var delete: @Sendable (UUID) async -> VoidResult<WineInteractorError>
 
     public init(
-        fetchAll: @escaping @Sendable () async -> Result<[Wine], WineInteractorError>,
-        fetch: @escaping @Sendable (UUID) async -> Result<Wine, WineInteractorError>,
-        upsert: @escaping @Sendable (Wine) async -> VoidResult<WineInteractorError>,
+        fetchAll: @escaping @Sendable () async -> Result<[WineBottle], WineInteractorError>,
+        fetch: @escaping @Sendable (UUID) async -> Result<WineBottle, WineInteractorError>,
+        upsert: @escaping @Sendable (WineBottle) async -> VoidResult<WineInteractorError>,
         delete: @escaping @Sendable (UUID) async -> VoidResult<WineInteractorError>
     ) {
         self.fetchAll = fetchAll
