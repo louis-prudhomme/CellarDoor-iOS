@@ -16,6 +16,11 @@ public struct WineFeatureAddWineView: View {
             TextField("Enter Wine Name", text: $store.name)
                 .textFieldStyle(.roundedBorder)
                 .padding()
+            
+            TextField("Vintage Year", value: $store.millesime, format: .number)
+                .textFieldStyle(.roundedBorder)
+                .keyboardType(.numberPad)
+                .padding()
 
             CellarButton("Add Wine", systemImage: "plus", isLoading: store.isLoading) {
                 store.send(.submitButtonTapped)

@@ -7,11 +7,16 @@ public struct WineFeatureAddWine {
     @ObservableState
     public struct State: Equatable {
         var name: String = ""
+        var millesime: Int
         var isLoading: Bool = false
 
         @Presents var alert: AlertState<Never>?
 
-        public init() {}
+        public init() {
+            @Dependency(\.date) var date
+
+            millesime = Calendar.current.component(.year, from: date())
+        }
     }
 
     public enum Action: BindableAction, Equatable {
@@ -36,8 +41,8 @@ public struct WineFeatureAddWine {
         Reduce { state, action in
             switch action {
                 case .submitButtonTapped:
-                    return .run { [upsert, name = state.name] send in
-                        let wine = Wine.new(name: name)
+                    return .run { [upsert, name = state.name, millesime = state.millesime] send in
+                        let wine = Wine.new(name: name, millesime: millesime)
                         await send(.wineAdded(await upsert(wine)))
                     }
 

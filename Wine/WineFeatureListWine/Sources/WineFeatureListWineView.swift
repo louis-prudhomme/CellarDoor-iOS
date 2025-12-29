@@ -16,7 +16,13 @@ public struct WineFeatureListWineView: View {
             } else {
                 List {
                     ForEach(store.wines) { wine in
-                        Text("\(wine.name)")
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(wine.name)
+                                .font(.headline)
+                            Text("Vintage: \(wine.millesime)")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
