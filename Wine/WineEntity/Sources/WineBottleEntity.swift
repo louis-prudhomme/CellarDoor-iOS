@@ -10,12 +10,16 @@ public final class WineBottleEntity: IdentifiableEntity {
     @Attribute public var name: String
     @Attribute public var millesime: Int
     @Attribute public var createdAt: Date
+    
+    @Relationship(deleteRule: .nullify)
+    public var winemaker: WinemakerEntity?
 
-    public init(id: UUID, name: String, millesime: Int, createdAt: Date) {
+    public init(id: UUID, name: String, millesime: Int, createdAt: Date, winemaker: WinemakerEntity? = nil) {
         self.id = id
         self.name = name
         self.millesime = millesime
         self.createdAt = createdAt
+        self.winemaker = winemaker
     }
     
     public static func idPredicate(for id: UUID) -> Predicate<WineBottleEntity> {
@@ -24,8 +28,8 @@ public final class WineBottleEntity: IdentifiableEntity {
 }
 
 public extension WineBottleEntity {
-    static func new(id: UUID, name: String, millesime: Int, createdAt: Date) -> WineBottleEntity {
-        return WineBottleEntity(id: id, name: name, millesime: millesime, createdAt: createdAt)
+    static func new(id: UUID, name: String, millesime: Int, createdAt: Date, winemaker: WinemakerEntity? = nil) -> WineBottleEntity {
+        return WineBottleEntity(id: id, name: name, millesime: millesime, createdAt: createdAt, winemaker: winemaker)
     }
     
     func update(from entity: WineBottleEntity) {
@@ -33,5 +37,6 @@ public extension WineBottleEntity {
         name = entity.name
         millesime = entity.millesime
         createdAt = entity.createdAt
+        winemaker = entity.winemaker
     }
 }
