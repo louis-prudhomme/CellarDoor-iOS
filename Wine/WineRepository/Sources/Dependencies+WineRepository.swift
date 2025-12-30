@@ -23,9 +23,9 @@ public extension WineRepository {
 // MARK: - Dependency Registration
 
 extension WineRepository: DependencyKey {
-    public static let liveValue = WineRepository(base: .live())
-    public static let testValue = WineRepository(base: .mock())
-    public static let previewValue = WineRepository(base: .mock())
+    public static let liveValue = Self.live()
+    public static let testValue = Self.mock()
+    public static let previewValue = Self.mock()
 }
 
 public extension DependencyValues {
