@@ -48,6 +48,17 @@ extension WineInteractor {
                 try await repository.upsert(domain.toEntity())
             }
         },
+        upsertWinemaker: { winemaker in
+            @Dependency(\.wineRepository) var repository
+
+            guard !winemaker.name.isEmpty else {
+                return .failure(WineInteractorError.nameEmpty)
+            }
+            
+            return await withInteractorResult(parser: WineInteractorError.init) {
+                try await repository.upsertWinemaker(winemaker.toEntity())
+            }
+        },
         delete: { id in
             @Dependency(\.wineRepository) var repository
             

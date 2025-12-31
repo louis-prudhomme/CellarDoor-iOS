@@ -6,11 +6,11 @@ import SwiftUI
 public struct MultipleChoiceSelection<Choice: Choosable, IError: InteractorError> {
     @ObservableState
     public struct State: Equatable {
-        
         public let delegate: MultipleChoiceInteractorDelegate<Choice, IError>
         public let title: String
 
         @Presents var alert: AlertState<Never>?
+        @Presents var destination: Destination.State?
 
         public var searchText: String = ""
         public var choices: [Choice] = []
@@ -29,12 +29,20 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: InteractorError
         }
     }
 
-    public enum Action: BindableAction, Equatable {
+    @Reducer
+    public enum Destination {
+        case addChoice(AddChoice<Choice, IError>)
+    }
+
+    public enum Action: BindableAction {
         case onAppear
         case choiceSelected(Choice)
         case searchTextChanged(String)
         case choicesLoaded(Result<[Choice], IError>)
 
+        case addChoiceButtonTapped
+
+        case destination(PresentationAction<Destination.Action>)
         case alert(PresentationAction<Never>)
         case binding(BindingAction<State>)
         case delegate(Delegate)
@@ -77,6 +85,20 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: InteractorError
                 case .choiceSelected(let choice):
                     return .send(.delegate(.choiceSelected(choice)))
 
+                case .addChoiceButtonTapped:
+                    state.destination = .addChoice(AddChoice<Choice, IError>.State(
+                        title: state.title,
+                        delegate: state.delegate
+                    ))
+                    return .none
+
+                case .destination(.presented(.addChoice(.delegate(.choiceAdded)))):
+                    state.destination = nil
+                    return .run { send in await send(.onAppear) }
+
+                case .destination:
+                    return .none
+
                 case .alert:
                     return .none
 
@@ -87,12 +109,20 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: InteractorError
                     return .none
             }
         }
+        .ifLet(\.$destination, action: \.destination)
     }
 }
+
+// MARK: - Companion protocol
 
 public protocol Choosable: Equatable, Identifiable, Sendable {}
 
 public struct MultipleChoiceInteractorDelegate<Choice: Choosable, IError: InteractorError>: Sendable {
     let fetchChoices: @Sendable (String) async -> Result<[Choice], IError>
+    let createChoice: @Sendable (String) async -> VoidResult<IError>
     let getDisplayName: @Sendable (Choice) -> String
 }
+
+// MARK: - Conformances
+
+extension MultipleChoiceSelection.Destination.State: Equatable {}

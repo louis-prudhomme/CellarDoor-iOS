@@ -7,6 +7,7 @@ extension WineInteractor {
         fetchAllWinemakers: { _ in fatalError("WineInteractor.fetchAllWinemakers") },
         fetch: { _ in fatalError("WineInteractor.fetch") },
         upsert: { _ in fatalError("WineInteractor.upsert") },
+        upsertWinemaker: { _ in fatalError("WineInteractor.upsertWinemaker") },
         delete: { _ in fatalError("WineInteractor.delete") }
     )
 }

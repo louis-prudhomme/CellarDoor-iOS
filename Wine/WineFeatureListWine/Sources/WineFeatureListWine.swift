@@ -14,7 +14,7 @@ public struct WineFeatureListWine {
         public init() {}
     }
     
-    public enum Action: Equatable {
+    public enum Action {
         case screenAppeared
         case screenPulled
         case alertDismissed

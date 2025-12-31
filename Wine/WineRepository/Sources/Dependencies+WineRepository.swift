@@ -7,6 +7,7 @@ import WineEntity
 public struct WineRepository: Sendable {
     public let base: BaseRepository<WineBottleEntity>
     public let fetchAllWinemakers: @MainActor @Sendable (String) async throws -> [WinemakerEntity]
+    public let upsertWinemaker: @MainActor @Sendable (WinemakerEntity) async throws -> Void
 }
 
 // MARK: - Convenience Accessors

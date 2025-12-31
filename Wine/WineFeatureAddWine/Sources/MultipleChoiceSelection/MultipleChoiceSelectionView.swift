@@ -27,7 +27,22 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: InteractorError>: 
                     .searchable(text: $store.searchText)
                 }
             }
-            .navigationTitle(store.title)
+            .navigationDestination(
+              item: $store.scope(
+                state: \.destination?.addChoice,
+                action: \.destination.addChoice
+              )
+            ) { store in
+              AddChoiceView(store: store)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Add a \(store.title)", systemImage: "plus") {
+                        store.send(.addChoiceButtonTapped)
+                    }
+                }
+            }
+            .navigationTitle("Select a \(store.title)")
             .navigationBarTitleDisplayMode(.inline)
             .task { store.send(.onAppear) }
             .alert($store.scope(state: \.alert, action: \.alert))
@@ -41,21 +56,22 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: InteractorError>: 
 }
 
 #if DEBUG
-struct Example: Choosable {
+private struct Example: Choosable {
     let id = "ID"
     let name = "Xavier Frissant"
 }
-enum ExampleEmptyError: InteractorError {}
+private enum ExampleEmptyError: InteractorError {}
 
 #Preview {
     let delegate = MultipleChoiceInteractorDelegate<Example, ExampleEmptyError>(
         fetchChoices: { _ in .success([
             Example()
         ]) },
+        createChoice: { _ in .success },
         getDisplayName: { $0.name }
     )
     let state = MultipleChoiceSelection.State(
-        title: "Select Winemaker",
+        title: "Winemaker",
         delegate: delegate
     )
 

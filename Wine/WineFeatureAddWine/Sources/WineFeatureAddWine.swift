@@ -22,7 +22,7 @@ public struct WineFeatureAddWine {
         }
     }
 
-    public enum Action: BindableAction, Equatable {
+    public enum Action: BindableAction {
         case submitButtonTapped
         case selectWinemakerButtonTapped
         case wineAdded(VoidResult<WineInteractorError>)
@@ -54,10 +54,11 @@ public struct WineFeatureAddWine {
                 case .selectWinemakerButtonTapped:
                     let winemakerInteractorDelegate = MultipleChoiceInteractorDelegate<Winemaker, WineInteractorError>(
                         fetchChoices: wineInteractor.fetchAllWinemakers,
+                        createChoice: { [upsertWinemaker = wineInteractor.upsertWinemaker] name in await upsertWinemaker(Winemaker.new(name: name))},
                         getDisplayName: { $0.name }
                     )
                     state.winemakerSheet = MultipleChoiceSelection<Winemaker, WineInteractorError>.State(
-                        title: "Select Winemaker",
+                        title: "Winemaker",
                         delegate: winemakerInteractorDelegate
                     )
                     return .none
