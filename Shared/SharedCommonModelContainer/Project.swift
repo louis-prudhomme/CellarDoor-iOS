@@ -7,15 +7,9 @@ let project = Project.project(
     hasTests: false,
     dependencies: [
         .external(name: "Dependencies"),
-        .project(
-            target: "SharedCommonPersistence",
-            path: .relativeToRoot("Shared/SharedCommonPersistence")
-        ),
+        .module(at: "Shared/SharedCommonPersistence"),
         // Entity dependencies
-        .project(
-            target: "WineEntity",
-            path: .relativeToRoot("Wine/WineEntity")
-        )
+        .module(at: "Wine/WineEntity")
     ]
 )
 

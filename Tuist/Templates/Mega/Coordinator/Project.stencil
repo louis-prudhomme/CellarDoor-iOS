@@ -5,10 +5,7 @@ let project = Project.project(
     name: "{{ group }}Coordinator",
     hasResources: false,
     dependencies: [
-        .project(
-            target: "SharedCommonArchitecture",
-            path: .relativeToRoot("Shared/SharedCommonArchitecture")
-        ),
+        .module(at: "Shared/SharedCommonArchitecture"),
         .project(
             target: "{{ group }}FeatureList{{ group }}",
             path: .relativeToRoot("{{ group }}/{{ group }}FeatureList{{ group }}")

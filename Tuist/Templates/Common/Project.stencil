@@ -5,7 +5,10 @@ let project = Project.project(
     name: "{{ group }}Common{{ name }}",
     hasResources: false,
     dependencies: [
-        // .external(name: "SharedCommonDependencies"),
+        // .external(
+        //      target: "SharedCommonDependencies",
+        //      path: .relativeToRoot("Shared/SharedCommonDependencies")
+        //  ),
         // .project(
         //     target: "SharedCommonUtilities",
         //     path: .relativeToRoot("Shared/SharedCommonUtilities")

@@ -9,16 +9,10 @@ let project = Project.project(
 /*
  Add this piece of configuration to wherever necessary, (ex : `./src/App/Project.swift`):
  ```swift
- .project(
-     target: "SharedCommonUtilities",
-     path: .relativeToRoot("Shared/SharedCommonUtilities")
- ),
+ .module(at: "Shared/SharedCommonUtilities"),
  ```
  Or (if in a feature module):
  ```swift
- .project(
-     target: "SharedCommonUtilities",
-     path: .relativeToRoot("Shared/SharedCommonUtilities")
- ),
+ .module(at: "Shared/SharedCommonUtilities"),
  ```
  */

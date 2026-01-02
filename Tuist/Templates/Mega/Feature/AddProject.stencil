@@ -5,14 +5,8 @@ let project = Project.project(
     name: "{{ group }}FeatureAdd{{ group }}",
     hasResources: false,
     dependencies: [
-        .project(
-            target: "SharedCommonArchitecture",
-            path: .relativeToRoot("Shared/SharedCommonArchitecture")
-        ),
-        .project(
-            target: "SharedCommonDesignSystem",
-            path: .relativeToRoot("Shared/SharedCommonDesignSystem")
-        ),
+        .module(at: "Shared/SharedCommonArchitecture"),
+        .module(at: "Shared/SharedCommonDesignSystem"),
         .project(
             target: "{{ group }}Interactor",
             path: .relativeToRoot("{{ group }}/{{ group }}Interactor")

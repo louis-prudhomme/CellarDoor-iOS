@@ -10,9 +10,6 @@ let project = Project.project(
             target: "{{ group }}Entity",
             path: .relativeToRoot("{{ group }}/{{ group }}Entity")
         ),
-        .project(
-            target: "SharedCommonPersistence",
-            path: .relativeToRoot("Shared/SharedCommonPersistence")
-        ),
+        .module(at: "Shared/SharedCommonPersistence"),
     ]
 )

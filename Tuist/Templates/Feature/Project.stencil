@@ -5,20 +5,11 @@ let project = Project.project(
     name: "{{ group }}Feature{{ name }}",
     hasResources: false,
     dependencies: [
-        .project(
-            target: "SharedCommonArchitecture",
-            path: .relativeToRoot("Shared/SharedCommonArchitecture")
-        ),
+        .module(at: "Shared/SharedCommonArchitecture"),
         /*
-        .project(
-            target: "SharedCommonUtilities",
-            path: .relativeToRoot("Shared/SharedCommonUtilities")
-        ),
+        .module(at: "Shared/SharedCommonUtilities"),
         */
-        .project(
-            target: "SharedCommonDesignSystem",
-            path: .relativeToRoot("Shared/SharedCommonDesignSystem")
-        )
+        .module(at: "Shared/SharedCommonDesignSystem")
     ],
 )
 

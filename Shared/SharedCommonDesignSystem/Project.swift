@@ -9,16 +9,10 @@ let project = Project.project(
 /*
  Add this piece of configuration to wherever necessary, (ex : `./src/App/Project.swift`):
  ```swift
- .project(
- target: "SharedCommonDesignSystem",
- path: .relativeToRoot("Shared/SharedCommonDesignSystem")
- ),
+ .module(at: "Shared/SharedCommonDesignSystem"),
  ```
  Or (if in a feature module):
  ```swift
- .project(
- target: "SharedCommonDesignSystem",
- path: .relativeToRoot("Shared/SharedCommonDesignSystem")
- ),
+ .module(at: "Shared/SharedCommonDesignSystem"),
  ```
  */

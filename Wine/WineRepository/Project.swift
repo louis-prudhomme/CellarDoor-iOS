@@ -6,13 +6,7 @@ let project = Project.project(
     hasResources: false,
     dependencies: [
         .external(name: "Dependencies"),
-        .project(
-            target: "WineEntity",
-            path: .relativeToRoot("Wine/WineEntity")
-        ),
-        .project(
-            target: "SharedCommonPersistence",
-            path: .relativeToRoot("Shared/SharedCommonPersistence")
-        )
+        .module(at: "Wine/WineEntity"),
+        .module(at: "Shared/SharedCommonPersistence")
     ]
 )

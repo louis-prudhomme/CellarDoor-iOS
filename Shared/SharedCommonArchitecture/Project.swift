@@ -6,10 +6,7 @@ let project = Project.project(
     hasResources: false,
     dependencies: [
         .external(name: "ComposableArchitecture"),
-        .project(
-            target: "SharedCommonDependencies",
-            path: .relativeToRoot("Shared/SharedCommonDependencies")
-        ),
+        .module(at: "Shared/SharedCommonDependencies"),
         .external(name: "DependenciesAdditions")
     ]
 )
@@ -17,16 +14,10 @@ let project = Project.project(
 /*
  To use this common module, add this to your target's Project.swift:
  ```swift
- .project(
- target: "SharedCommonArchitecture",
- path: .relativeToRoot("Shared/SharedCommonArchitecture")
- ),
+ .module(at: "Shared/SharedCommonArchitecture"),
  ```
  Or alternatively, if used in another group, adjust the path accordingly:
  ```swift
- .project(
- target: "SharedCommonArchitecture",
- path: .relativeToRoot("Shared/SharedCommonArchitecture")
- ),
+ .module(at: "Shared/SharedCommonArchitecture"),
  ```
  */
