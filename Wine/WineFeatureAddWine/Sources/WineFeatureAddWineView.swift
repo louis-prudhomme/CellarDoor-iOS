@@ -36,13 +36,16 @@ public struct WineFeatureAddWineView: View {
             }
         }
         .alert($store.scope(state: \.alert, action: \.alert))
-        .sheet(item: $store.scope(state: \.winemakerSheet, action: \.winemakerSheet)) { store in
-            MultipleChoiceSelectionView(store: store)
-                .presentationDetents([.medium, .large])
-        }
-        .sheet(item: $store.scope(state: \.grapeVarietySheet, action: \.grapeVarietySheet)) { store in
-            MultipleChoiceSelectionView(store: store)
-                .presentationDetents([.medium, .large])
+        .sheet(item: $store.scope(state: \.destination, action: \.destination)) { store in
+            switch store.case {
+                case let .winemaker(store):
+                    MultipleChoiceSelectionView(store: store)
+                        .presentationDetents([.medium, .large])
+
+                case let .grapeVarieties(store):
+                    MultipleChoiceSelectionView(store: store)
+                        .presentationDetents([.medium, .large])
+            }
         }
         .navigationTitle("Add a wine")
     }
