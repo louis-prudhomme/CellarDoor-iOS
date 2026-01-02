@@ -1,8 +1,4 @@
 disabled_rules:
-  - cyclomatic_complexity
-  - type_body_length
-  - blanket_disable_command
-  - discouraged_optional_boolean
   - required_deinit # we usually do not have the need for this
   - explicit_acl # Because extension or class must have modifier, so its implicit
   - explicit_enum_raw_value # Because sometimes Raw Values is not needed
@@ -15,9 +11,10 @@ disabled_rules:
   - explicit_type_interface # Because sometimes its better to use type inference
   - anonymous_argument_in_multiline_closure # we like it like this
   - prefer_zero_over_explicit_init # we like it like this
-  - private_swiftui_state # prevents for easily debugging states
   - implicit_return # Prefer implicit returns in closures, functions and getters.
-  - explicit_top_level_acl
+  - explicit_top_level_acl # Painful
+  - nesting # Does not work well with TCA, limits SwiftUI views organization through extensions
+  - todo # Does not warrant a lint warning
   # Styling - handled by SwiftFormat
   - attributes
   - closing_brace
@@ -100,7 +97,6 @@ opt_in_rules:
   - extension_access_modifier
   - fallthrough
   - fatal_error_message
-  - file_name
   - file_name_no_space
   - for_where
   - force_cast
@@ -194,7 +190,6 @@ opt_in_rules:
   - strong_iboutlet
   - superfluous_disable_command
   - test_case_accessibility
-  - todo
   - unhandled_throwing_task
   - unneeded_override
   - unowned_variable_capture
@@ -210,7 +205,6 @@ opt_in_rules:
   - function_parameter_count
   - large_tuple
   - line_length
-  - nesting
   - type_body_length
   - contains_over_filter_count
   - contains_over_filter_is_empty
@@ -225,6 +219,10 @@ opt_in_rules:
   - reduce_boolean
   - reduce_into
   - sorted_first_last
+  - cyclomatic_complexity
+  - type_body_length
+  - blanket_disable_command
+  - discouraged_optional_boolean
   # Styling - not handled by SwiftFormat
   - inclusive_language
   - computed_accessors_order
@@ -242,7 +240,7 @@ custom_rules:
     severity: warning
   use_umbrella_to_import_tca:
     name: "Do you really want to import TCA only ?"
-    regex: "ComposableArchitecture"
+    regex: "import ComposableArchitecture"
     message: "Most of the time, you'll want to import SharedCommonArchitecture which encapsulate TCA and Helpers at once."
     severity: warning
 
