@@ -53,7 +53,7 @@ disabled_rules:
   - number_separator
   - opening_brace
   - operator_usage_whitespace
-  - operator_whitespace
+  - operator_name_whitespace
   - optional_enum_case_matching
   - period_spacing
   - prefer_self_in_static_references
@@ -123,7 +123,7 @@ opt_in_rules:
   - private_over_fileprivate
   - redundant_nil_coalescing
   - redundant_objc_attribute
-  - redundant_optional_initialization
+  - implicit_optional_initialization
   - redundant_set_access_control
   - redundant_string_enum_value
   - redundant_type_annotation
@@ -149,7 +149,6 @@ opt_in_rules:
   - accessibility_trait_for_button
   - array_init
   - balanced_xctest_lifecycle
-  - blanket_disable_command
   - class_delegate_protocol
   - comment_spacing
   - compiler_protocol_init
@@ -220,7 +219,6 @@ opt_in_rules:
   - reduce_into
   - sorted_first_last
   - cyclomatic_complexity
-  - type_body_length
   - blanket_disable_command
   - discouraged_optional_boolean
   # Styling - not handled by SwiftFormat
