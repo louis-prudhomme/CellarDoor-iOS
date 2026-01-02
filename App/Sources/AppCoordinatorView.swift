@@ -3,24 +3,28 @@ import SwiftUI
 import WineCoordinator
 
 public struct AppCoordinatorView: View {
-    @Bindable var store: StoreOf<AppCoordinator>
+    var store: StoreOf<AppCoordinator>
 
     public init(store: StoreOf<AppCoordinator>) {
         self.store = store
     }
 
     public var body: some View {
-        VStack {
-            Button("Go to wines") {
-                store.send(.navigateToWines)
+        if let destination = store.destination {
+            switch destination {
+                case .wines:
+                    if let wineStore = store.scope(state: \.destination?.wines, action: \.destination.wines) {
+                        WineCoordinatorView(store: wineStore)
+                    }
             }
-        }
-        .fullScreenCover(item: $store.scope(state: \.destination, action: \.destination)) { store in
-            switch store.case {
-                case let .wines(store):
-                    WineCoordinatorView(store: store)
-                @unknown default:
-                    Text("Unknown destination")
+        } else {
+            VStack {
+                Text("Pick a door")
+                    .font(.largeTitle)
+
+                Button("Go to wines") {
+                    store.send(.navigateToWines)
+                }
             }
         }
     }

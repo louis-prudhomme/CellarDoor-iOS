@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
 
     env:
-      IOS_SIMULATOR_VERSION: "26.0"
+      IOS_SIMULATOR_VERSION: "26.0.1"
       IOS_SIMULATOR_TYPE: "iPhone-16"
       IOS_SIMULATOR_NAME: "iPhone Test Runner"
 

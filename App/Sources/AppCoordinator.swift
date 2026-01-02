@@ -5,9 +5,12 @@ import WineCoordinator
 public struct AppCoordinator {
     @ObservableState
     public struct State: Equatable {
+        /// TODO: set to nil when we'll build something else than wines
         @Presents var destination: Destination.State?
 
-        public init() {}
+        public init(destination: Destination.State? = .wines(WineCoordinator.State())) {
+            self.destination = destination
+        }
     }
 
     public enum Action {
