@@ -11,19 +11,21 @@ struct AddChoiceView<Choice: Choosable, IError: InteractorError>: View {
     }
 
     var body: some View {
-        VStack {
-            TextField("Enter name", text: $store.choiceName)
-                .textFieldStyle(.roundedBorder)
-                .padding()
+        Form {
+            HStack(spacing: 16) {
+                Text("Name")
 
-            Spacer()
-
+                TextField("Enter name", text: $store.choiceName)
+                    .textFieldStyle(.roundedBorder)
+                    .multilineTextAlignment(.trailing)
+            }
+        }
+        .overlay(alignment: .bottom) {
             CellarButton("Create \(store.choiceName)", systemImage: "plus", isLoading: store.isLoading) {
                 store.send(.submitChoiceButtonTapped)
             }
             .buttonStyle(.borderedProminent)
         }
-        .padding()
         .alert($store.scope(state: \.alert, action: \.alert))
         .navigationTitle("Create \(store.title)")
         .navigationBarTitleDisplayMode(.inline)
@@ -50,11 +52,13 @@ private enum ExampleEmptyError: InteractorError {}
     )
 
     Color.pink.ignoresSafeArea().sheet(isPresented: .constant(true)) {
-        AddChoiceView<Example, ExampleEmptyError>(
-            store: Store(initialState: state) {
-                AddChoice<Example, ExampleEmptyError>()
-            }
-        )
+        NavigationStack {
+            AddChoiceView<Example, ExampleEmptyError>(
+                store: Store(initialState: state) {
+                    AddChoice<Example, ExampleEmptyError>()
+                }
+            )
+        }
     }
 }
 #endif

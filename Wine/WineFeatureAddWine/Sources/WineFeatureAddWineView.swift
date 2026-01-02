@@ -5,33 +5,36 @@ import SwiftUI
 public struct WineFeatureAddWineView: View {
     @Bindable var store: StoreOf<WineFeatureAddWine>
 
+    @Dependency(\.date) private var date
+
     public init(store: StoreOf<WineFeatureAddWine>) {
         self.store = store
     }
 
     public var body: some View {
-        VStack(alignment: .center) {
-            TextField("Enter Wine Name", text: $store.name)
-                .textFieldStyle(.roundedBorder)
-                .padding()
+        VStack {
+            Form {
+                HStack(spacing: 16) {
+                    Text("Name")
 
-            TextField("Vintage Year", value: $store.millesime, format: .number)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.numberPad)
-                .padding()
+                    TextField("Enter Wine Name", text: $store.name)
+                        .multilineTextAlignment(.trailing)
+                        .textFieldStyle(.roundedBorder)
+                }
 
-            winemakerSelectionButton
+                yearPicker
 
-            grapeVarietiesSelectionButton
+                winemakerSelectionButton
 
-            Spacer()
-
-            CellarButton("Add Wine", systemImage: "plus", isLoading: store.isLoading) {
-                store.send(.submitButtonTapped)
+                grapeVarietiesSelectionButton
             }
-            .buttonStyle(.borderedProminent)
+            .overlay(alignment: .bottom) {
+                CellarButton("Add Wine", systemImage: "plus", isLoading: store.isLoading) {
+                    store.send(.submitButtonTapped)
+                }
+                .buttonStyle(.borderedProminent)
+            }
         }
-        .padding()
         .alert($store.scope(state: \.alert, action: \.alert))
         .sheet(item: $store.scope(state: \.winemakerSheet, action: \.winemakerSheet)) { store in
             MultipleChoiceSelectionView(store: store)
@@ -42,6 +45,16 @@ public struct WineFeatureAddWineView: View {
                 .presentationDetents([.medium, .large])
         }
         .navigationTitle("Add a wine")
+    }
+
+    @ViewBuilder var yearPicker: some View {
+        Picker("Vintage Year", selection: $store.millesime) {
+            let currentYear: Int = Calendar.current.component(.year, from: date())
+            ForEach(1930...currentYear, id: \.self) { year in
+                Text(year.formatted(.number.grouping(.never))).tag(year)
+            }
+        }
+        .pickerStyle(.automatic)
     }
 
     @ViewBuilder var winemakerSelectionButton: some View {
@@ -57,10 +70,8 @@ public struct WineFeatureAddWineView: View {
                     .accessibilityHidden(true)
             }
             .accessibilityHint("Select or edit the winemaker")
-            .padding()
             .cornerRadius(8)
         }
-        .buttonStyle(.bordered)
     }
 
     @ViewBuilder var grapeVarietiesSelectionButton: some View {
@@ -76,17 +87,17 @@ public struct WineFeatureAddWineView: View {
                     .accessibilityHidden(true)
             }
             .accessibilityHint("Select or edit grape varieties")
-            .padding()
             .cornerRadius(8)
         }
-        .buttonStyle(.bordered)
     }
 }
 
 #Preview {
-    WineFeatureAddWineView(
-        store: Store(initialState: WineFeatureAddWine.State()) {
-            WineFeatureAddWine()
-        }
-    )
+    NavigationStack {
+        WineFeatureAddWineView(
+            store: Store(initialState: WineFeatureAddWine.State()) {
+                WineFeatureAddWine()
+            }
+        )
+    }
 }
