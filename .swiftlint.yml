@@ -246,6 +246,11 @@ custom_rules:
     regex: "import Dependencies"
     message: "Most of the time, you'll want to import SharedCommonArchitecture which encapsulate Dependencies and Helpers at once."
     severity: warning
+  use_dependency_for_date:
+    name: "Use Dependency Injection for Date"
+    regex: "Calendar\\.current|Date\\(\\)"
+    message: "Use Dependency Injection to get the current date or calendar instance instead of directly accessing Calendar.current or creating a new Date instance."
+    severity: error
 
 analyzer_rules:
   - unused_declaration
