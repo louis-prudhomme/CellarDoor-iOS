@@ -6,8 +6,13 @@ import SwiftUI
 @main
 struct CellarDoorApp: App {
     init() {
-        prepareDependencies {
-            $0.modelContainer = ModelContainerConfiguration.initialize()
+        do {
+            let modelContainer = try ModelContainerConfiguration.initialize()
+            prepareDependencies {
+                $0.modelContainer = modelContainer
+            }
+        } catch {
+            fatalError("Failed to initialize ModelContainer: \(error)")
         }
     }
 

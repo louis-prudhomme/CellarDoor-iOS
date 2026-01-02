@@ -22,7 +22,7 @@ let template = Template(
         // MARK: - Repository Module
 
         .file(
-            path: "\(groupAttribute)/\(groupAttribute)Repository/Sources/Dependencies+\(groupAttribute)Repository.swift",
+            path: "\(groupAttribute)/\(groupAttribute)Repository/Sources/\(groupAttribute)Repository+Dependencies.swift",
             templatePath: "Repository/Client.stencil"
         ),
         .file(
@@ -49,7 +49,7 @@ let template = Template(
         // MARK: - Interactor Module
 
         .file(
-            path: "\(groupAttribute)/\(groupAttribute)Interactor/Sources/Dependencies+\(groupAttribute)Interactor.swift",
+            path: "\(groupAttribute)/\(groupAttribute)Interactor/Sources/\(groupAttribute)Interactor+Dependencies.swift",
             templatePath: "Interactor/Client.stencil"
         ),
         .file(

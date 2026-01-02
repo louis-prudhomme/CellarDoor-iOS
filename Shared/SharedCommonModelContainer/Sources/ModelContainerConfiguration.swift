@@ -1,7 +1,6 @@
 import SwiftData
 import WineEntity
 
-/// Central configuration for models
 public enum ModelContainerConfiguration {
     /// All @Model types registered in the app.
     public static let modelTypes: [any PersistentModel.Type] = [
@@ -18,13 +17,11 @@ public enum ModelContainerConfiguration {
         return try ModelContainer(for: schema, configurations: configuration)
     }
 
-    /// Initializes the shared ModelContainer dependency
-    public static func initialize() -> ModelContainer {
-        return try! makeContainer(inMemory: false)
+    public static func initialize() throws -> ModelContainer {
+        return try makeContainer(inMemory: false)
     }
 
-    /// Initializes an in-memory ModelContainer for previews/tests
-    public static func initializeForTesting() -> ModelContainer {
-        return try! makeContainer(inMemory: true)
+    public static func initializeForTesting() throws -> ModelContainer {
+        return try makeContainer(inMemory: true)
     }
 }

@@ -7,7 +7,10 @@ public struct CellarButton: View {
     let isDisabled: Bool
     let action: () -> Void
 
+    private let buttonText: String
+
     public init(_ text: String, systemImage: String? = nil, isLoading: Bool = false, isDisabled: Bool = false, action: @escaping () -> Void) {
+        buttonText = text
         self.text = Text(text)
         self.systemImage = systemImage
         self.isLoading = isLoading
@@ -27,13 +30,26 @@ public struct CellarButton: View {
                 if isLoading {
                     ProgressView()
                         .progressViewStyle(.circular)
+                        .accessibilityHidden(true)
                 } else {
                     if let systemImage {
                         Image(systemName: systemImage)
+                            .accessibilityHidden(true)
                     }
                 }
             }
         }
         .disabled(isDisabled || isLoading)
+        .accessibilityLabel(accessibilityLabel)
+    }
+
+    // MARK: - Accessibility Computed Properties
+
+    private var accessibilityLabel: String {
+        if isLoading {
+            return "\(buttonText), loading"
+        } else {
+            return buttonText
+        }
     }
 }

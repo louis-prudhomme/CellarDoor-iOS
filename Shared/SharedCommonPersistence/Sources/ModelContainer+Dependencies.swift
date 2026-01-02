@@ -32,6 +32,7 @@ private enum ModelContainerKey: DependencyKey {
         )
     }()
 
+    // swiftlint:disable:next force_try
     static let testValue: ModelContainer = try! ModelContainer(
         for: Schema([]),
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)

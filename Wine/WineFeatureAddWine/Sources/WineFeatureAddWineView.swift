@@ -48,7 +48,9 @@ public struct WineFeatureAddWineView: View {
                 Spacer()
 
                 Image(systemName: store.winemaker == nil ? "chevron.right" : "square.and.pencil")
+                    .accessibilityHidden(true)
             }
+            .accessibilityHint("Select or edit the winemaker")
             .padding()
             .cornerRadius(8)
         }
