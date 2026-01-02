@@ -1,6 +1,6 @@
 import SharedCommonArchitecture
-import SharedCommonDesignSystem
 import SharedCommonDependencies
+import SharedCommonDesignSystem
 import SwiftUI
 
 struct AddChoiceView<Choice: Choosable, IError: ClientError>: View {

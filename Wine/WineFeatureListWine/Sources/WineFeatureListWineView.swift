@@ -1,7 +1,7 @@
 import SharedCommonArchitecture
 import SharedCommonDesignSystem
-import WineDomain
 import SwiftUI
+import WineDomain
 
 public struct WineFeatureListWineView: View {
     @Bindable var store: StoreOf<WineFeatureListWine>

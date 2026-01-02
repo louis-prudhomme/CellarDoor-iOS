@@ -23,7 +23,6 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: ClientError>: View
                     }
                     .searchable(text: $store.searchText)
 
-
                     if store.isMultiSelect {
                         submitButton
                     }
