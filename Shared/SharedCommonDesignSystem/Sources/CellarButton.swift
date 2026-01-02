@@ -17,7 +17,7 @@ public struct CellarButton: View {
 
     public var body: some View {
         Button {
-            if !isLoading && !isDisabled {
+            if !isLoading, !isDisabled {
                 action()
             }
         } label: {

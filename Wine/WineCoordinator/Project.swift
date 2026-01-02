@@ -16,15 +16,15 @@ let project = Project.project(
         .project(
             target: "WineFeatureAddWine",
             path: .relativeToRoot("Wine/WineFeatureAddWine")
-        ),
+        )
     ]
 )
 
 /*
-Add to your App target's Project.swift to use this Coordinator:
-```swift
-.project(
-    target: "WineCoordinator",
-    path: .relativeToRoot("Wine/WineCoordinator")
-),
-*/
+ Add to your App target's Project.swift to use this Coordinator:
+ ```swift
+ .project(
+     target: "WineCoordinator",
+     path: .relativeToRoot("Wine/WineCoordinator")
+ ),
+ */

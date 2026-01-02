@@ -12,9 +12,9 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: InteractorError
         @Presents var alert: AlertState<Never>?
         @Presents var destination: Destination.State?
 
-        public var searchText: String = ""
+        public var searchText = ""
         public var choices: [Choice] = []
-        public var isLoading: Bool = false
+        public var isLoading = false
 
         public init(title: String, delegate: MultipleChoiceInteractorDelegate<Choice, IError>) {
             self.title = title
@@ -23,9 +23,9 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: InteractorError
 
         public static func == (lhs: MultipleChoiceSelection<Choice, IError>.State, rhs: MultipleChoiceSelection<Choice, IError>.State) -> Bool {
             lhs.title == rhs.title
-            && lhs.searchText == rhs.searchText
-            && lhs.choices == rhs.choices
-            && lhs.isLoading == rhs.isLoading
+                && lhs.searchText == rhs.searchText
+                && lhs.choices == rhs.choices
+                && lhs.isLoading == rhs.isLoading
         }
     }
 
@@ -63,26 +63,26 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: InteractorError
                     state.isLoading = true
                     state.choices = []
                     return .run { [delegate = state.delegate, searchText = state.searchText] send in
-                        await send(.choicesLoaded(await delegate.fetchChoices(searchText)))
+                        await send(.choicesLoaded(delegate.fetchChoices(searchText)))
                     }
 
-                case .choicesLoaded(.success(let choices)):
+                case let .choicesLoaded(.success(choices)):
                     state.choices = choices
                     state.isLoading = false
                     return .none
 
-                case .choicesLoaded(.failure(let error)):
+                case let .choicesLoaded(.failure(error)):
                     state.isLoading = false
                     state.alert = AlertState {
                         TextState(error.localizedDescription)
                     }
                     return .none
 
-                case .searchTextChanged(let text):
+                case let .searchTextChanged(text):
                     state.searchText = text
                     return .none
 
-                case .choiceSelected(let choice):
+                case let .choiceSelected(choice):
                     return .send(.delegate(.choiceSelected(choice)))
 
                 case .addChoiceButtonTapped:

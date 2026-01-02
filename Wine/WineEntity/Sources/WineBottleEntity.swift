@@ -1,6 +1,6 @@
-import SwiftData
 import Foundation
 import SharedCommonPersistence
+import SwiftData
 
 // Warning: Add every new entity in the schema declaration in SharedCommonModelContainer
 
@@ -10,9 +10,8 @@ public final class WineBottleEntity: IdentifiableEntity {
     @Attribute public var name: String
     @Attribute public var millesime: Int
     @Attribute public var createdAt: Date
-    
-    @Relationship(deleteRule: .nullify)
-    public var winemaker: WinemakerEntity?
+
+    @Relationship(deleteRule: .nullify) public var winemaker: WinemakerEntity?
 
     public init(id: UUID, name: String, millesime: Int, createdAt: Date, winemaker: WinemakerEntity? = nil) {
         self.id = id
@@ -21,7 +20,7 @@ public final class WineBottleEntity: IdentifiableEntity {
         self.createdAt = createdAt
         self.winemaker = winemaker
     }
-    
+
     public static func idPredicate(for id: UUID) -> Predicate<WineBottleEntity> {
         #Predicate<WineBottleEntity> { $0.id == id }
     }
@@ -31,7 +30,7 @@ public extension WineBottleEntity {
     static func new(id: UUID, name: String, millesime: Int, createdAt: Date, winemaker: WinemakerEntity? = nil) -> WineBottleEntity {
         return WineBottleEntity(id: id, name: name, millesime: millesime, createdAt: createdAt, winemaker: winemaker)
     }
-    
+
     func update(from entity: WineBottleEntity) {
         // id is immutable, no update needed
         name = entity.name

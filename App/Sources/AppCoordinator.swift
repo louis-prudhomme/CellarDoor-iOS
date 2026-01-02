@@ -25,17 +25,17 @@ public struct AppCoordinator {
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
-            case .navigateToWines:
-                state.destination = .wines(WineCoordinator.State())
-                return .none
+                case .navigateToWines:
+                    state.destination = .wines(WineCoordinator.State())
+                    return .none
 
-            case .destination:
-                return .none
+                case .destination:
+                    return .none
             }
         }
         .ifLet(\.$destination, action: \.destination)
     }
 }
 
-// Necessary for protocol conformance
+/// Necessary for protocol conformance
 extension AppCoordinator.Destination.State: Equatable {}

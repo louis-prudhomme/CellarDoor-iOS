@@ -8,7 +8,7 @@ import WineEntity
 
 public extension WineRepository {
     static func live(
-        base: BaseRepository<WineBottleEntity> = .live(),
+        base: BaseRepository<WineBottleEntity> = .live()
     ) -> WineRepository {
         WineRepository(
             base: base,
@@ -18,7 +18,7 @@ public extension WineRepository {
                 let context = container.mainContext
                 let predicate = #Predicate<WinemakerEntity> { $0.name.contains(searchText) }
                 let descriptor = FetchDescriptor<WinemakerEntity>(predicate: searchText.isEmpty ? nil : predicate)
-    
+
                 return try context.fetch(descriptor)
             },
             upsertWinemaker: { proposed in

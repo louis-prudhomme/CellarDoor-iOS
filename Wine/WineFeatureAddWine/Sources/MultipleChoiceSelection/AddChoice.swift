@@ -11,8 +11,8 @@ public struct AddChoice<Choice: Choosable, IError: InteractorError> {
 
         @Presents var alert: AlertState<Never>?
 
-        public var choiceName: String = ""
-        public var isLoading: Bool = false
+        public var choiceName = ""
+        public var isLoading = false
 
         public init(title: String, delegate: MultipleChoiceInteractorDelegate<Choice, IError>) {
             self.title = title
@@ -21,8 +21,8 @@ public struct AddChoice<Choice: Choosable, IError: InteractorError> {
 
         public static func == (lhs: AddChoice<Choice, IError>.State, rhs: AddChoice<Choice, IError>.State) -> Bool {
             lhs.title == rhs.title
-            && lhs.choiceName == rhs.choiceName
-            && lhs.isLoading == rhs.isLoading
+                && lhs.choiceName == rhs.choiceName
+                && lhs.isLoading == rhs.isLoading
         }
     }
 
@@ -54,7 +54,7 @@ public struct AddChoice<Choice: Choosable, IError: InteractorError> {
                         await send(.choiceAdditionFinished(result))
                     }
 
-                case .choiceAdditionFinished(.failure(let error)):
+                case let .choiceAdditionFinished(.failure(error)):
                     state.isLoading = false
                     state.alert = AlertState {
                         TextState(error.localizedDescription)

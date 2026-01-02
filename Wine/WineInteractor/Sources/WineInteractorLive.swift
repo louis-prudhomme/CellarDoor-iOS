@@ -28,6 +28,7 @@ extension WineInteractor {
                 guard let entity else {
                     return .failure(WineInteractorError.notFound)
                 }
+
                 return .success(entity.toDomain())
             }
         },
@@ -38,7 +39,7 @@ extension WineInteractor {
             guard !domain.name.isEmpty else {
                 return .failure(WineInteractorError.nameEmpty)
             }
-            
+
             let currentYear = Calendar.current.component(.year, from: date())
             guard domain.millesime <= currentYear else {
                 return .failure(WineInteractorError.millesimeInvalid)
@@ -54,14 +55,14 @@ extension WineInteractor {
             guard !winemaker.name.isEmpty else {
                 return .failure(WineInteractorError.nameEmpty)
             }
-            
+
             return await withInteractorResult(parser: WineInteractorError.init) {
                 try await repository.upsertWinemaker(winemaker.toEntity())
             }
         },
         delete: { id in
             @Dependency(\.wineRepository) var repository
-            
+
             return await withInteractorResult(parser: WineInteractorError.init) {
                 try await repository.delete(id)
             }

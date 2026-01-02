@@ -7,13 +7,13 @@ public struct WineFeatureListWine {
     @ObservableState
     public struct State: Equatable {
         var wines = [WineBottle]()
-        var isLoading: Bool = false
+        var isLoading = false
 
         @Presents var alert: AlertState<Never>?
 
         public init() {}
     }
-    
+
     public enum Action {
         case screenAppeared
         case screenPulled
@@ -32,7 +32,7 @@ public struct WineFeatureListWine {
     public init() {}
 
     @Dependency(\.wineInteractor.fetchAll) var fetchAll
-    
+
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
@@ -40,19 +40,19 @@ public struct WineFeatureListWine {
                     state.wines.removeAll()
                     state.isLoading = true
                     return .run { [fetchAll] send in
-                        await send(.wineLoaded(await fetchAll()))
+                        await send(.wineLoaded(fetchAll()))
                     }
 
                 case .alertDismissed:
                     state.alert = nil
                     return .none
 
-                case .wineLoaded(.success(let wines)):
+                case let .wineLoaded(.success(wines)):
                     state.isLoading = false
                     state.wines = wines
                     return .none
 
-                case .wineLoaded(.failure(let error)):
+                case let .wineLoaded(.failure(error)):
                     state.isLoading = false
                     state.alert = AlertState {
                         TextState(error.localizedDescription)

@@ -1,10 +1,10 @@
 import Dependencies
 import SwiftData
 
-extension DependencyValues {
+public extension DependencyValues {
     /// The shared ModelContainer for SwiftData persistence.
     /// Initialize this in your app's entry point with all your @Model types.
-    public var modelContainer: ModelContainer {
+    var modelContainer: ModelContainer {
         get { self[ModelContainerKey.self] }
         set { self[ModelContainerKey.self] = newValue }
     }
@@ -32,10 +32,8 @@ private enum ModelContainerKey: DependencyKey {
         )
     }()
 
-    static let testValue: ModelContainer = {
-        try! ModelContainer(
-            for: Schema([]),
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
-    }()
+    static let testValue: ModelContainer = try! ModelContainer(
+        for: Schema([]),
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
 }

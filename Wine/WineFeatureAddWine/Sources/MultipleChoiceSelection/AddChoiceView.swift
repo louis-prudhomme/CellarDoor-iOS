@@ -1,16 +1,16 @@
-import SwiftUI
 import SharedCommonArchitecture
 import SharedCommonDesignSystem
 import SharedCommonInteractor
+import SwiftUI
 
 struct AddChoiceView<Choice: Choosable, IError: InteractorError>: View {
-    @Bindable public var store: StoreOf<AddChoice<Choice, IError>>
+    @Bindable var store: StoreOf<AddChoice<Choice, IError>>
 
-    public init(store: StoreOf<AddChoice<Choice, IError>>) {
+    init(store: StoreOf<AddChoice<Choice, IError>>) {
         self.store = store
     }
 
-    public var body: some View {
+    var body: some View {
         VStack {
             TextField("Enter name", text: $store.choiceName)
                 .textFieldStyle(.roundedBorder)
@@ -35,6 +35,7 @@ private struct Example: Choosable {
     let id = "ID"
     let name = "Xavier Frissant"
 }
+
 private enum ExampleEmptyError: InteractorError {}
 
 #Preview {
@@ -57,4 +58,3 @@ private enum ExampleEmptyError: InteractorError {}
     }
 }
 #endif
-

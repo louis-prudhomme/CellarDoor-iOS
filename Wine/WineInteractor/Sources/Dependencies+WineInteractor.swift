@@ -31,9 +31,9 @@ public struct WineInteractor: Sendable {
 // MARK: - Dependency Registration
 
 extension WineInteractor: DependencyKey {
-    public static let liveValue: WineInteractor = .live
-    public static let testValue: WineInteractor = .mock
-    public static let previewValue: WineInteractor = .mock
+    public static let liveValue = WineInteractor.live
+    public static let testValue = WineInteractor.mock
+    public static let previewValue = WineInteractor.mock
 }
 
 public extension DependencyValues {

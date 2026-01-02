@@ -240,6 +240,11 @@ custom_rules:
     regex: "AnyView"
     message: "Avoid using AnyView as it can lead to performance or animation issues. Consider using generics or protocol-oriented approaches instead."
     severity: warning
+  use_umbrella_to_import_tca:
+    name: "Do you really want to import TCA only ?"
+    regex: "ComposableArchitecture"
+    message: "Most of the time, you'll want to import SharedCommonArchitecture which encapsulate TCA and Helpers at once."
+    severity: warning
 
 analyzer_rules:
   - unused_declaration

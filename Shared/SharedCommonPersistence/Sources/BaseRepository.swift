@@ -1,6 +1,6 @@
-import SwiftData
-import Foundation
 import Dependencies
+import Foundation
+import SwiftData
 
 // MARK: - Identifiable Entity Protocol
 

@@ -1,5 +1,5 @@
-import Foundation
 import Dependencies
+import Foundation
 import SharedCommonDomain
 
 public struct Winemaker: Interactable {

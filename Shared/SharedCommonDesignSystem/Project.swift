@@ -3,8 +3,8 @@ import ProjectDescriptionHelpers
 
 let project = Project.project(
     name: "SharedCommonDesignSystem",
-    dependencies: [],
-    )
+    dependencies: []
+)
 
 /*
  Add this piece of configuration to wherever necessary, (ex : `./src/App/Project.swift`):

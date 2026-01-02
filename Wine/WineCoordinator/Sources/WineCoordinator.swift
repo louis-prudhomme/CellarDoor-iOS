@@ -1,6 +1,6 @@
 import SharedCommonArchitecture
-import WineFeatureListWine
 import WineFeatureAddWine
+import WineFeatureListWine
 
 @Reducer
 public struct WineCoordinator {
@@ -11,13 +11,14 @@ public struct WineCoordinator {
 
         public init() {}
     }
-    
+
     public enum Action {
         case list(WineFeatureListWine.Action)
         case path(StackActionOf<Path>)
     }
-    
+
     // MARK: - Destinations
+
     @Reducer
     public enum Path {
         case addWine(WineFeatureAddWine)
@@ -26,23 +27,25 @@ public struct WineCoordinator {
     @Dependency(\.dismiss) var dismiss
 
     public init() {}
-    
+
     public var body: some ReducerOf<Self> {
         Scope(state: \.list, action: \.list) {
             WineFeatureListWine()
         }
-        
+
         Reduce { state, action in
             switch action {
                 // MARK: - List Actions
+
                 case .list(.delegate(.addButtonTapped)):
                     state.path.append(.addWine(WineFeatureAddWine.State()))
                     return .none
-                
+
                 // MARK: - Leaf Actions
+
                 case .list(.delegate(.popToRoot)):
                     return .run { [dismiss] _ in await dismiss() }
-                
+
                 default:
                     return .none
             }
@@ -51,5 +54,5 @@ public struct WineCoordinator {
     }
 }
 
-// Necessary to make StackState work
+/// Necessary to make StackState work
 extension WineCoordinator.Path.State: Equatable {}

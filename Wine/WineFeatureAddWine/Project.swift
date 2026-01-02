@@ -16,6 +16,6 @@ let project = Project.project(
         .project(
             target: "WineInteractor",
             path: .relativeToRoot("Wine/WineInteractor")
-        ),
+        )
     ]
 )

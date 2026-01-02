@@ -5,7 +5,7 @@ import WineEntity
 
 public extension WineRepository {
     static func mock(
-        base: BaseRepository<WineBottleEntity> = .mock(),
+        base: BaseRepository<WineBottleEntity> = .mock()
     ) -> WineRepository {
         WineRepository(
             base: base,

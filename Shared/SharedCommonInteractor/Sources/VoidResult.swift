@@ -7,7 +7,7 @@ public enum VoidResult<Failure: Error>: Sendable, Equatable where Failure: Equat
     /// A failure, storing an error.
     case failure(Failure)
 
-    public init<SuccessType>(body: @Sendable () async -> Result<SuccessType, Failure>) async {
+    public init(body: @Sendable () async -> Result<some Any, Failure>) async {
         let res = await body()
         if case let .failure(error) = res {
             self = .failure(error)
@@ -16,7 +16,7 @@ public enum VoidResult<Failure: Error>: Sendable, Equatable where Failure: Equat
         }
     }
 
-    public init<SuccessType>(body: @Sendable () -> Result<SuccessType, Failure>) {
+    public init(body: @Sendable () -> Result<some Any, Failure>) {
         let res = body()
         if case let .failure(error) = res {
             self = .failure(error)
@@ -33,8 +33,8 @@ public extension VoidResult {
     /// - Returns: a full-fledged `Result`
     func map<ResultType>(mapped: ResultType) -> Result<ResultType, Failure> {
         switch self {
-        case let .failure(error): return .failure(error)
-        case .success: return .success(mapped)
+            case let .failure(error): return .failure(error)
+            case .success: return .success(mapped)
         }
     }
 
@@ -44,8 +44,8 @@ public extension VoidResult {
     /// - Returns: a full-fledged `Result`
     func map<ResultType>(mapper: @escaping () -> ResultType) -> Result<ResultType, Failure> {
         switch self {
-        case let .failure(error): return .failure(error)
-        case .success: return .success(mapper())
+            case let .failure(error): return .failure(error)
+            case .success: return .success(mapper())
         }
     }
 }

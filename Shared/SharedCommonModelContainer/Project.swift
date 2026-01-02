@@ -15,29 +15,29 @@ let project = Project.project(
         .project(
             target: "WineEntity",
             path: .relativeToRoot("Wine/WineEntity")
-        ),
+        )
     ]
 )
 
 /*
-In App:
-```swift
-import Dependencies
-import SharedCommonModelContainer
+ In App:
+ ```swift
+ import Dependencies
+ import SharedCommonModelContainer
 
-@main
-struct CellarDoorApp: App {
-    init() {
-        prepareDependencies {
-            $0.modelContainer = ModelContainerConfiguration.initialize()
-        }
-    }
-    
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
-}
-```
-*/
+ @main
+ struct CellarDoorApp: App {
+     init() {
+         prepareDependencies {
+             $0.modelContainer = ModelContainerConfiguration.initialize()
+         }
+     }
+
+     var body: some Scene {
+         WindowGroup {
+             ContentView()
+         }
+     }
+ }
+ ```
+ */

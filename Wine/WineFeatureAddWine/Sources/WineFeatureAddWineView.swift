@@ -14,7 +14,7 @@ public struct WineFeatureAddWineView: View {
             TextField("Enter Wine Name", text: $store.name)
                 .textFieldStyle(.roundedBorder)
                 .padding()
-            
+
             TextField("Vintage Year", value: $store.millesime, format: .number)
                 .textFieldStyle(.roundedBorder)
                 .keyboardType(.numberPad)
@@ -38,8 +38,7 @@ public struct WineFeatureAddWineView: View {
         .navigationTitle("Add a wine")
     }
 
-    @ViewBuilder
-    var winemakerSelectionButton: some View {
+    @ViewBuilder var winemakerSelectionButton: some View {
         Button {
             store.send(.selectWinemakerButtonTapped)
         } label: {

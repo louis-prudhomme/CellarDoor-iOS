@@ -7,7 +7,7 @@ public enum WineInteractorError: InteractorError {
     case notFound
     case unknown
 
-    public init(_ error: any Error) {
+    public init(_: any Error) {
         self = .unknown
     }
 

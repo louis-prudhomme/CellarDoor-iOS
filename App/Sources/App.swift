@@ -1,14 +1,7 @@
-//
-//  CellarDoorApp.swift
-//  Cellar Door
-//
-//  Created by Louis Prud'homme on 26/12/2025.
-//
-
-import SwiftUI
 import Dependencies
 import SharedCommonArchitecture
 import SharedCommonModelContainer
+import SwiftUI
 
 @main
 struct CellarDoorApp: App {

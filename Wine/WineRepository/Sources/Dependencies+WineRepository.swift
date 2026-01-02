@@ -1,7 +1,7 @@
 import Dependencies
 import Foundation
-import SwiftData
 import SharedCommonPersistence
+import SwiftData
 import WineEntity
 
 public struct WineRepository: Sendable {

@@ -13,6 +13,6 @@ let project = Project.project(
         .project(
             target: "SharedCommonPersistence",
             path: .relativeToRoot("Shared/SharedCommonPersistence")
-        ),
+        )
     ]
 )

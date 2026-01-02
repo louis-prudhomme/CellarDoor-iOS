@@ -1,15 +1,15 @@
-import SwiftUI
 import SharedCommonArchitecture
 import SharedCommonInteractor
+import SwiftUI
 
 struct MultipleChoiceSelectionView<Choice: Choosable, IError: InteractorError>: View {
-    @Bindable public var store: StoreOf<MultipleChoiceSelection<Choice, IError>>
+    @Bindable var store: StoreOf<MultipleChoiceSelection<Choice, IError>>
 
-    public init(store: StoreOf<MultipleChoiceSelection<Choice, IError>>) {
+    init(store: StoreOf<MultipleChoiceSelection<Choice, IError>>) {
         self.store = store
     }
 
-    public var body: some View {
+    var body: some View {
         NavigationStack {
             VStack {
                 if store.isLoading {
@@ -28,12 +28,12 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: InteractorError>: 
                 }
             }
             .navigationDestination(
-              item: $store.scope(
-                state: \.destination?.addChoice,
-                action: \.destination.addChoice
-              )
+                item: $store.scope(
+                    state: \.destination?.addChoice,
+                    action: \.destination.addChoice
+                )
             ) { store in
-              AddChoiceView(store: store)
+                AddChoiceView(store: store)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -47,7 +47,6 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: InteractorError>: 
             .task { store.send(.onAppear) }
             .alert($store.scope(state: \.alert, action: \.alert))
         }
-
     }
 
     func getDisplayName(for choice: Choice) -> String {
@@ -60,6 +59,7 @@ private struct Example: Choosable {
     let id = "ID"
     let name = "Xavier Frissant"
 }
+
 private enum ExampleEmptyError: InteractorError {}
 
 #Preview {
@@ -84,4 +84,3 @@ private enum ExampleEmptyError: InteractorError {}
     }
 }
 #endif
-

@@ -37,7 +37,7 @@ public let commonSettings: SettingsDictionary = [
     "SWIFT_TREAT_WARNINGS_AS_ERRORS": "YES",
     "DEVELOPMENT_TEAM": "W79F375Z3J", // myself
     "CODE_SIGN_STYLE": "Automatic",
-    "ENABLE_MODULE_VERIFIER": "YES",    
+    "ENABLE_MODULE_VERIFIER": "YES",
     "MODULE_VERIFIER_SUPPORTED_LANGUAGES": "objective-c objective-c++",
     "MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS": "gnu11 gnu++20",
     "ENABLE_USER_SCRIPT_SANDBOXING": "YES"

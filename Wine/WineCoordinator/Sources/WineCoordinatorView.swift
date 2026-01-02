@@ -9,7 +9,7 @@ public struct WineCoordinatorView: View {
     public init(store: StoreOf<WineCoordinator>) {
         self.store = store
     }
-    
+
     public var body: some View {
         NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             WineFeatureListWineView(

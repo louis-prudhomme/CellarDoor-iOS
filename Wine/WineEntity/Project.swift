@@ -9,16 +9,16 @@ let project = Project.project(
         .project(
             target: "SharedCommonPersistence",
             path: .relativeToRoot("Shared/SharedCommonPersistence")
-        ),
+        )
     ]
 )
 
 /*
-Don't forget to add this module to SharedCommonModelContainer dependencies in its Project.swift:
-```swift
-.project(
-    target: "WineEntity",
-    path: .relativeToRoot("Wine/WineEntity")
-),
-```
-*/
+ Don't forget to add this module to SharedCommonModelContainer dependencies in its Project.swift:
+ ```swift
+ .project(
+     target: "WineEntity",
+     path: .relativeToRoot("Wine/WineEntity")
+ ),
+ ```
+ */

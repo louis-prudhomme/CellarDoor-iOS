@@ -1,7 +1,7 @@
 import ProjectDescription
 
-let groupAttribute: Template.Attribute = .required("group")
-let nameAttribute: Template.Attribute = .required("name")
+let groupAttribute = Template.Attribute.required("group")
+let nameAttribute = Template.Attribute.required("name")
 
 let template = Template(
     description: "New feature, complete with its first screen",
@@ -25,6 +25,6 @@ let template = Template(
         .file(
             path: "\(groupAttribute)/\(groupAttribute)Feature\(nameAttribute)/Tests/.gitkeep",
             templatePath: "Gitkeep.stencil"
-        ),
+        )
     ]
 )

@@ -1,6 +1,6 @@
 import ProjectDescription
 
-let groupAttribute: Template.Attribute = .required("group")
+let groupAttribute = Template.Attribute.required("group")
 
 let template = Template(
     description: "Complete domain vertical slice with entity, repository, interactor, domain, coordinator, and features",
@@ -9,6 +9,7 @@ let template = Template(
     ],
     items: [
         // MARK: - Entity Module
+
         .file(
             path: "\(groupAttribute)/\(groupAttribute)Entity/Sources/\(groupAttribute)Entity.swift",
             templatePath: "Entity/Entity.stencil"
@@ -17,8 +18,9 @@ let template = Template(
             path: "\(groupAttribute)/\(groupAttribute)Entity/Project.swift",
             templatePath: "Entity/Project.stencil"
         ),
-        
+
         // MARK: - Repository Module
+
         .file(
             path: "\(groupAttribute)/\(groupAttribute)Repository/Sources/Dependencies+\(groupAttribute)Repository.swift",
             templatePath: "Repository/Client.stencil"
@@ -43,8 +45,9 @@ let template = Template(
             path: "\(groupAttribute)/\(groupAttribute)Repository/Project.swift",
             templatePath: "Repository/Project.stencil"
         ),
-        
+
         // MARK: - Interactor Module
+
         .file(
             path: "\(groupAttribute)/\(groupAttribute)Interactor/Sources/Dependencies+\(groupAttribute)Interactor.swift",
             templatePath: "Interactor/Client.stencil"
@@ -77,8 +80,9 @@ let template = Template(
             path: "\(groupAttribute)/\(groupAttribute)Interactor/Tests/.gitkeep",
             templatePath: "Gitkeep.stencil"
         ),
-        
+
         // MARK: - Domain Module
+
         .file(
             path: "\(groupAttribute)/\(groupAttribute)Domain/Sources/\(groupAttribute)Domain.swift",
             templatePath: "Domain/Domain.stencil"
@@ -87,8 +91,9 @@ let template = Template(
             path: "\(groupAttribute)/\(groupAttribute)Domain/Project.swift",
             templatePath: "Domain/Project.stencil"
         ),
-        
+
         // MARK: - Coordinator Module
+
         .file(
             path: "\(groupAttribute)/\(groupAttribute)Coordinator/Sources/\(groupAttribute)Coordinator.swift",
             templatePath: "Coordinator/Coordinator.stencil"
@@ -105,8 +110,9 @@ let template = Template(
             path: "\(groupAttribute)/\(groupAttribute)Coordinator/Project.swift",
             templatePath: "Coordinator/Project.stencil"
         ),
-        
+
         // MARK: - Feature List Module
+
         .file(
             path: "\(groupAttribute)/\(groupAttribute)FeatureList\(groupAttribute)/Sources/\(groupAttribute)FeatureList\(groupAttribute).swift",
             templatePath: "Feature/ListReducer.stencil"
@@ -123,8 +129,9 @@ let template = Template(
             path: "\(groupAttribute)/\(groupAttribute)FeatureList\(groupAttribute)/Project.swift",
             templatePath: "Feature/ListProject.stencil"
         ),
-        
+
         // MARK: - Feature Add Module
+
         .file(
             path: "\(groupAttribute)/\(groupAttribute)FeatureAdd\(groupAttribute)/Sources/\(groupAttribute)FeatureAdd\(groupAttribute).swift",
             templatePath: "Feature/AddReducer.stencil"

@@ -6,9 +6,9 @@ public enum ModelContainerConfiguration {
     /// All @Model types registered in the app.
     public static let modelTypes: [any PersistentModel.Type] = [
         WineBottleEntity.self,
-        WinemakerEntity.self,
+        WinemakerEntity.self
     ]
-    
+
     /// Creates a configured ModelContainer with all registered models
     /// - Parameter inMemory: If true, uses in-memory storage (for previews/tests)
     /// - Returns: Configured ModelContainer
@@ -17,16 +17,14 @@ public enum ModelContainerConfiguration {
         let configuration = ModelConfiguration(isStoredInMemoryOnly: inMemory)
         return try ModelContainer(for: schema, configurations: configuration)
     }
-    
+
     /// Initializes the shared ModelContainer dependency
     public static func initialize() -> ModelContainer {
-        let container = try! makeContainer(inMemory: false)
-        return container
+        return try! makeContainer(inMemory: false)
     }
-    
+
     /// Initializes an in-memory ModelContainer for previews/tests
     public static func initializeForTesting() -> ModelContainer {
-        let container = try! makeContainer(inMemory: true)
-        return container
+        return try! makeContainer(inMemory: true)
     }
 }

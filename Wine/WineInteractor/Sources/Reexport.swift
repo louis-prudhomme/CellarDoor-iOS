@@ -1,2 +1,2 @@
-@_exported import WineDomain
 @_exported import SharedCommonInteractor
+@_exported import WineDomain

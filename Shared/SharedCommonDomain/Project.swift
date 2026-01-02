@@ -14,18 +14,18 @@ let project = Project.project(
 )
 
 /*
-To use this common module, add this to your target's Project.swift:
-```swift
-.project(
-    target: "SharedCommonDomain",
-    path: .relativeToRoot("Shared/SharedCommonDomain")
-),
-```
-Or alternatively, if used in another group, adjust the path accordingly:
-```swift
-.project(
-    target: "SharedCommonDomain",
-    path: .relativeToRoot("Shared/SharedCommonDomain")
-),
-```
-*/
+ To use this common module, add this to your target's Project.swift:
+ ```swift
+ .project(
+     target: "SharedCommonDomain",
+     path: .relativeToRoot("Shared/SharedCommonDomain")
+ ),
+ ```
+ Or alternatively, if used in another group, adjust the path accordingly:
+ ```swift
+ .project(
+     target: "SharedCommonDomain",
+     path: .relativeToRoot("Shared/SharedCommonDomain")
+ ),
+ ```
+ */

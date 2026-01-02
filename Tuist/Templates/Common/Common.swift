@@ -1,7 +1,7 @@
 import ProjectDescription
 
-let groupAttribute: Template.Attribute = .required("group")
-let nameAttribute: Template.Attribute = .required("name")
+let groupAttribute = Template.Attribute.required("group")
+let nameAttribute = Template.Attribute.required("name")
 
 let template = Template(
     description: "New common module",
@@ -21,6 +21,6 @@ let template = Template(
         .file(
             path: "\(groupAttribute)/\(groupAttribute)Common\(nameAttribute)/Project.swift",
             templatePath: "Project.stencil"
-        ),
+        )
     ]
 )
