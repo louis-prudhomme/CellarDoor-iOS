@@ -1,6 +1,6 @@
 import Foundation
-import WineDomain
 import SharedCommonDependencies
+import WineDomain
 import WineRepository
 
 extension WineInteractor {
@@ -40,21 +40,20 @@ extension WineInteractor {
         upsert: { domain in
             @Dependency(\.wineRepository) var repository
             @Dependency(\.date) var date
+            @Dependency(\.calendar) var calendar
 
             guard !domain.name.isEmpty else {
                 return .failure(WineInteractorError.nameEmpty)
             }
 
-            let currentYear = Calendar.current.component(.year, from: date())
+            let currentYear = calendar.component(.year, from: date())
             guard domain.millesime <= currentYear else {
                 return .failure(WineInteractorError.millesimeInvalid)
             }
-
             guard !domain.grapeVarieties.isEmpty else {
                 return .failure(WineInteractorError.grapeVarietyEmpty)
             }
-
-            guard domain.abv >= 0.0 && domain.abv <= 100.0 else {
+            guard domain.abv >= 0.0, domain.abv <= 100.0 else {
                 return .failure(WineInteractorError.invalidAbv)
             }
 

@@ -12,7 +12,7 @@ public struct WineFeatureAddWine {
         var millesime: Int
         var winemaker: Winemaker?
         var grapeVarieties = [GrapeVariety]()
-        var abv: Double = 12.5
+        var abv = 12.5
         var isLoading = false
 
         @Presents var alert: AlertState<Never>?
@@ -20,8 +20,9 @@ public struct WineFeatureAddWine {
 
         public init() {
             @Dependency(\.date) var date
+            @Dependency(\.calendar) var calendar
 
-            millesime = Calendar.current.component(.year, from: date())
+            millesime = calendar.component(.year, from: date())
         }
     }
 
@@ -68,10 +69,10 @@ public struct WineFeatureAddWine {
                         getDisplayName: { $0.name }
                     )
                     state.destination = .winemaker(MultipleChoiceSelection<Winemaker, WineInteractorError>.State(
-                            title: "Winemaker",
-                            isMultiSelect: false,
-                            delegate: winemakerInteractorDelegate
-                        ))
+                        title: "Winemaker",
+                        isMultiSelect: false,
+                        delegate: winemakerInteractorDelegate
+                    ))
                     return .none
 
                 case .selectGrapeVarietiesButtonTapped:
@@ -80,7 +81,7 @@ public struct WineFeatureAddWine {
                         createChoice: { [upsertGrapeVariety = wineInteractor.upsertGrapeVariety] name in await upsertGrapeVariety(GrapeVariety.new(name: name)) },
                         getDisplayName: { $0.name }
                     )
-                state.destination = .grapeVarieties(MultipleChoiceSelection<GrapeVariety, WineInteractorError>.State(
+                    state.destination = .grapeVarieties(MultipleChoiceSelection<GrapeVariety, WineInteractorError>.State(
                         title: "Grape Varieties",
                         isMultiSelect: true,
                         delegate: grapeVarietyInteractorDelegate

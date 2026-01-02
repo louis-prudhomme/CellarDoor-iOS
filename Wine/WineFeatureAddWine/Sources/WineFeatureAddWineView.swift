@@ -6,6 +6,7 @@ public struct WineFeatureAddWineView: View {
     @Bindable var store: StoreOf<WineFeatureAddWine>
 
     @Dependency(\.date) private var date
+    @Dependency(\.calendar) var calendar
 
     public init(store: StoreOf<WineFeatureAddWine>) {
         self.store = store
@@ -60,8 +61,8 @@ public struct WineFeatureAddWineView: View {
 
     @ViewBuilder var yearPicker: some View {
         Picker("Vintage Year", selection: $store.millesime) {
-            let currentYear: Int = Calendar.current.component(.year, from: date())
-            ForEach(1930...currentYear, id: \.self) { year in
+            let currentYear: Int = calendar.component(.year, from: date())
+            ForEach(1_930 ... currentYear, id: \.self) { year in
                 Text(year.formatted(.number.grouping(.never))).tag(year)
             }
         }
