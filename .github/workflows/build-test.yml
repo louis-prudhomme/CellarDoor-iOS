@@ -1,0 +1,100 @@
+name: Tuist Build & Test
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    env:
+      IOS_SIMULATOR_VERSION: "26.0"
+      IOS_SIMULATOR_TYPE: "iPhone-16"
+      IOS_SIMULATOR_NAME: "iPhone Test Runner"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Install xcpretty
+        run: gem install xcpretty
+
+      - name: Install devtools
+        uses: jdx/mise-action@v2
+
+      - name: Fetch dependencies
+        run: tuist install
+
+      - name: Generate Xcode project
+        run: tuist generate --no-open
+
+      - name: Configure simulators
+        run: |
+          echo "📱 Configuring iOS Simulators..."
+          xcrun simctl create "${{ env.IOS_SIMULATOR_NAME }}" com.apple.CoreSimulator.SimDeviceType.${{ env.IOS_SIMULATOR_TYPE }} com.apple.CoreSimulator.SimRuntime.iOS-$(echo ${{ env.IOS_SIMULATOR_VERSION }} | tr '.' '-')
+
+      - name: Build project
+        run: |
+          echo "🔨 Building project..."
+          set -o pipefail
+          xcodebuild -workspace CellarDoor.xcworkspace \
+            -scheme CellarDoor \
+            -destination 'platform=iOS Simulator,name=${{ env.IOS_SIMULATOR_NAME }},OS=${{ env.IOS_SIMULATOR_VERSION }}' \
+            -configuration Debug \
+            clean build | xcpretty --color --simple
+
+      - name: Run tests
+        run: |
+          echo "🧪 Running tests..."
+          set -o pipefail
+          xcodebuild -workspace CellarDoor.xcworkspace \
+            -scheme CellarDoor \
+            -destination 'platform=iOS Simulator,name=${{ env.IOS_SIMULATOR_NAME }},OS=${{ env.IOS_SIMULATOR_VERSION }}' \
+            -configuration Debug \
+            test | xcpretty --color --simple
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            build/reports/
+            **/*.xcresult
+          retention-days: 7
+
+      - name: Generate dependency graph
+        if: always()
+        run: |
+          echo "📊 Generating dependency graph..."
+          tuist graph --format png --output-path dependency-graph.png
+          echo "Graph generated successfully!"
+
+      - name: Upload dependency graph
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-graph
+          path: dependency-graph.png
+          retention-days: 30
+
+      - name: Test Summary
+        if: always()
+        run: |
+          echo "## Build & Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "✅ All tests passed successfully!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Build or tests failed. Check the logs above for details." >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 **Dependency graph generated and uploaded as artifact**" >> $GITHUB_STEP_SUMMARY
