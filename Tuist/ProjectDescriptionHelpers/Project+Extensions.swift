@@ -75,7 +75,7 @@ public extension Project {
                     ]),
                     sources: ["Sources/**"],
                     resources: ["Resources/**"],
-                    scripts: [lintScript],
+                    scripts: [],
                     dependencies: dependencies
                 )
             ]
@@ -104,7 +104,7 @@ public extension Project {
                 infoPlist: .default,
                 sources: ["Sources/**"],
                 resources: hasResources ? ["Resources/**"] : [],
-                scripts: [lintScript],
+                scripts: [],
                 dependencies: dependencies
             )
         ]
