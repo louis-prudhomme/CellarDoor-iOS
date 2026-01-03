@@ -49,6 +49,10 @@ public struct BottlingLocationSelection {
             state, action in
             switch action {
                 case .binding(\.searchText):
+                    if state.searchText.isEmpty, state.isLoading == false {
+                        return .none
+                    }
+
                     state.isLoading = true
 
                     return .run { [searchText = state.searchText, search] send in
