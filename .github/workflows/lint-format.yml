@@ -3,134 +3,123 @@ name: Swift Lint & Format
 on:
   pull_request:
     paths:
-      - '**/*.swift'
+      - "**/*.swift"
   push:
     branches: [main, develop]
     paths:
-      - '**/*.swift'
+      - "**/*.swift"
 
 jobs:
   swift-quality-check:
     runs-on: macos-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Get changed Swift files
-      id: changed-files
-      run: |
-        if [ "${{ github.event_name }}" = "pull_request" ]; then
-          # For PRs, compare with the base branch
-          BASE_SHA=${{ github.event.pull_request.base.sha }}
-          HEAD_SHA=${{ github.event.pull_request.head.sha }}
-        else
-          # For pushes, compare with the previous commit
-          BASE_SHA=${{ github.event.before }}
-          HEAD_SHA=${{ github.sha }}
-        fi
-        
-        # Get changed Swift files
-        CHANGED_FILES=$(git diff --name-only --diff-filter=AM $BASE_SHA...$HEAD_SHA | grep '\.swift$' || true)
-        
-        if [ -z "$CHANGED_FILES" ]; then
-          echo "No Swift files changed"
-          echo "has-changes=false" >> $GITHUB_OUTPUT
-        else
-          echo "Changed Swift files:"
-          echo "$CHANGED_FILES"
-          echo "has-changes=true" >> $GITHUB_OUTPUT
-          # Save changed files to a temporary file for later use
-          echo "$CHANGED_FILES" > changed_swift_files.txt
-        fi
-
-    - name: Run SwiftFormat check
-      if: steps.changed-files.outputs.has-changes == 'true'
-      run: |
-        echo "🔍 Checking SwiftFormat compliance on changed files..."
-        
-        # Read changed files and check each one
-        EXIT_CODE=0
-        while IFS= read -r file; do
-          if [ -f "$file" ]; then
-            echo "Checking SwiftFormat for: $file"
-            
-            # Create a temporary copy of the file
-            cp "$file" "$file.tmp"
-            
-            # Run SwiftFormat on the file
-            swiftformat "$file.tmp" --quiet
-            
-            # Compare the formatted version with the original
-            if ! cmp -s "$file" "$file.tmp"; then
-              echo "❌ SwiftFormat violations found in: $file"
-              echo "Expected formatting:"
-              diff -u "$file" "$file.tmp" || true
-              EXIT_CODE=1
-            else
-              echo "✅ SwiftFormat compliant: $file"
-            fi
-            
-            # Clean up temporary file
-            rm "$file.tmp"
+      - name: Get changed Swift files
+        id: changed-files
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # For PRs, compare with the base branch
+            BASE_SHA=${{ github.event.pull_request.base.sha }}
+            HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          else
+            # For pushes, compare with the previous commit
+            BASE_SHA=${{ github.event.before }}
+            HEAD_SHA=${{ github.sha }}
           fi
-        done < changed_swift_files.txt
-        
-        if [ $EXIT_CODE -ne 0 ]; then
-          echo ""
-          echo "💡 To fix formatting issues, run:"
-          echo "swiftformat ."
-          exit $EXIT_CODE
-        fi
 
-    - name: Run SwiftLint
-      if: steps.changed-files.outputs.has-changes == 'true'
-      run: |
-        echo "🔍 Running SwiftLint on changed files..."
-        
-        # Run SwiftLint on changed files
-        EXIT_CODE=0
-        while IFS= read -r file; do
-          if [ -f "$file" ]; then
-            echo "Linting: $file"
-            
-            # Run SwiftLint on the specific file
-            if ! swiftlint lint --path "$file" --quiet; then
-              echo "❌ SwiftLint violations found in: $file"
-              EXIT_CODE=1
-            else
-              echo "✅ SwiftLint passed: $file"
-            fi
+          # Get changed Swift files
+          CHANGED_FILES=$(git diff --name-only --diff-filter=AM $BASE_SHA...$HEAD_SHA | grep '\.swift$' || true)
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No Swift files changed"
+            echo "has-changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changed Swift files:"
+            echo "$CHANGED_FILES"
+            echo "has-changes=true" >> $GITHUB_OUTPUT
+            # Save changed files to a temporary file for later use
+            echo "$CHANGED_FILES" > changed_swift_files.txt
           fi
-        done < changed_swift_files.txt
-        
-        if [ $EXIT_CODE -ne 0 ]; then
-          echo ""
-          echo "💡 To fix SwiftLint issues, run:"
-          echo "swiftlint --fix"
-          exit $EXIT_CODE
-        fi
 
-    - name: Summary
-      if: always() && steps.changed-files.outputs.has-changes == 'true'
-      run: |
-        echo "## Swift Quality Check Summary" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        if [ "${{ job.status }}" = "success" ]; then
-          echo "✅ All Swift files pass quality checks!" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "❌ Some Swift files failed quality checks. Please review the logs above." >> $GITHUB_STEP_SUMMARY
+      - name: Run SwiftFormat check
+        if: steps.changed-files.outputs.has-changes == 'true'
+        run: |
+          echo "🔍 Checking SwiftFormat compliance on changed files..."
+
+          # Read changed files and check each one
+          EXIT_CODE=0
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              echo "Checking SwiftFormat for: $file"
+              
+              # Run SwiftFormat on the file
+              if ! swiftformat "$file" --lint; then
+                echo "❌ SwiftFormat violations found in: $file"
+                EXIT_CODE=1
+              else
+                echo "✅ SwiftFormat compliant: $file"
+              fi
+            fi
+          done < changed_swift_files.txt
+
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo ""
+            echo "💡 To fix formatting issues, run:"
+            echo "swiftformat ."
+            exit $EXIT_CODE
+          fi
+
+      - name: Run SwiftLint
+        if: steps.changed-files.outputs.has-changes == 'true'
+        run: |
+          echo "🔍 Running SwiftLint on changed files..."
+
+          # Run SwiftLint on changed files
+          EXIT_CODE=0
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
+              echo "Linting: $file"
+              
+              # Run SwiftLint on the specific file
+              if ! swiftlint lint --path "$file" --quiet; then
+                echo "❌ SwiftLint violations found in: $file"
+                EXIT_CODE=1
+              else
+                echo "✅ SwiftLint passed: $file"
+              fi
+            fi
+          done < changed_swift_files.txt
+
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo ""
+            echo "💡 To fix SwiftLint issues, run:"
+            echo "swiftlint --fix"
+            exit $EXIT_CODE
+          fi
+
+      - name: Summary
+        if: always() && steps.changed-files.outputs.has-changes == 'true'
+        run: |
+          echo "## Swift Quality Check Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### How to fix:" >> $GITHUB_STEP_SUMMARY
-          echo "1. **SwiftFormat**: Run \`swiftformat .\` to auto-fix formatting" >> $GITHUB_STEP_SUMMARY
-          echo "2. **SwiftLint**: Run \`swiftlint --fix\` to auto-fix linting issues" >> $GITHUB_STEP_SUMMARY
-        fi
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "✅ All Swift files pass quality checks!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Some Swift files failed quality checks. Please review the logs above." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### How to fix:" >> $GITHUB_STEP_SUMMARY
+            echo "1. **SwiftFormat**: Run \`swiftformat .\` to auto-fix formatting" >> $GITHUB_STEP_SUMMARY
+            echo "2. **SwiftLint**: Run \`swiftlint --fix\` to auto-fix linting issues" >> $GITHUB_STEP_SUMMARY
+          fi
 
-    - name: No Swift changes
-      if: steps.changed-files.outputs.has-changes == 'false'
-      run: |
-        echo "✅ No Swift files were modified in this change."
-        echo "## Swift Quality Check Summary" >> $GITHUB_STEP_SUMMARY
-        echo "✅ No Swift files were modified - skipping quality checks." >> $GITHUB_STEP_SUMMARY
+      - name: No Swift changes
+        if: steps.changed-files.outputs.has-changes == 'false'
+        run: |
+          echo "✅ No Swift files were modified in this change."
+          echo "## Swift Quality Check Summary" >> $GITHUB_STEP_SUMMARY
+          echo "✅ No Swift files were modified - skipping quality checks." >> $GITHUB_STEP_SUMMARY
