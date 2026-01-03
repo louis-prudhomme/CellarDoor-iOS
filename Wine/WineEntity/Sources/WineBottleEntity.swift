@@ -15,12 +15,14 @@ public final class WineBottleEntity: IdentifiableEntity {
 
     @Relationship(deleteRule: .nullify) public var winemaker: WinemakerEntity?
     @Relationship(deleteRule: .nullify) public var grapeVarieties: [GrapeVarietyEntity]
+    @Relationship(deleteRule: .nullify) public var bottlingLocation: WineBottlingLocationEntity
 
-    public init(id: UUID, name: String, millesime: Int, abv: Double, grapeVarieties: [GrapeVarietyEntity], createdAt: Date, winemaker: WinemakerEntity?) {
+    public init(id: UUID, name: String, millesime: Int, abv: Double, bottlingLocation: WineBottlingLocationEntity, grapeVarieties: [GrapeVarietyEntity], createdAt: Date, winemaker: WinemakerEntity?) {
         self.id = id
         self.name = name
         self.millesime = millesime
         self.abv = abv
+        self.bottlingLocation = bottlingLocation
         self.createdAt = createdAt
         self.winemaker = winemaker
         self.grapeVarieties = grapeVarieties
@@ -37,6 +39,7 @@ public extension WineBottleEntity {
         name = entity.name
         millesime = entity.millesime
         abv = entity.abv
+        bottlingLocation = entity.bottlingLocation
         createdAt = entity.createdAt
         winemaker = entity.winemaker
         grapeVarieties = entity.grapeVarieties

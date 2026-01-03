@@ -7,6 +7,8 @@ public enum WineInteractorError: ClientError {
     case grapeVarietyEmpty
     case notFound
     case invalidAbv
+    case badData
+    case bottlingLocationMissing
     case unknown
 
     public init(_: any Error) {
@@ -24,6 +26,8 @@ public enum WineInteractorError: ClientError {
             case .grapeVarietyEmpty: "At least one grape variety must be selected."
             case .notFound: "Wine not found."
             case .invalidAbv: "AbV must be between 0 and 100."
+            case .badData: "Failed decoding data from the database."
+            case .bottlingLocationMissing: "Bottling location is missing."
             case .unknown: "An unknown error occurred."
         }
     }

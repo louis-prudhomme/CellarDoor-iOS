@@ -62,7 +62,7 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: ClientError> {
 
         Reduce { state, action in
             switch action {
-                case .onAppear:
+                case .binding(\.searchText), .onAppear:
                     state.isLoading = true
                     return .run { [delegate = state.delegate, searchText = state.searchText] send in
                         let result = await delegate.fetchChoices(searchText)
@@ -70,8 +70,8 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: ClientError> {
                     }
 
                 case let .choicesLoaded(.success(choices)):
-                    state.choices = choices
                     state.isLoading = false
+                    state.choices = choices
                     return .none
 
                 case let .choicesLoaded(.failure(error)):

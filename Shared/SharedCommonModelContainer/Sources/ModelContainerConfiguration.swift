@@ -6,12 +6,10 @@ public enum ModelContainerConfiguration {
     public static let modelTypes: [any PersistentModel.Type] = [
         WineBottleEntity.self,
         WinemakerEntity.self,
-        GrapeVarietyEntity.self
+        GrapeVarietyEntity.self,
+        WineBottlingLocationEntity.self
     ]
 
-    /// Creates a configured ModelContainer with all registered models
-    /// - Parameter inMemory: If true, uses in-memory storage (for previews/tests)
-    /// - Returns: Configured ModelContainer
     public static func makeContainer(inMemory: Bool = false) throws -> ModelContainer {
         let schema = Schema(modelTypes)
         let configuration = ModelConfiguration(isStoredInMemoryOnly: inMemory)

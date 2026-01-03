@@ -28,6 +28,7 @@ public struct WineFeatureAddWineView: View {
 
                     TextField("Enter AbV", value: $store.abv, format: .number)
                         .multilineTextAlignment(.trailing)
+                        .keyboardType(.decimalPad)
                         .textFieldStyle(.roundedBorder)
                 }
 
@@ -36,6 +37,8 @@ public struct WineFeatureAddWineView: View {
                 winemakerSelectionButton
 
                 grapeVarietiesSelectionButton
+
+                bottlingLocationSelectionButton
             }
             .overlay(alignment: .bottom) {
                 CellarButton("Add Wine", systemImage: "plus", isLoading: store.isLoading) {
@@ -46,14 +49,20 @@ public struct WineFeatureAddWineView: View {
         }
         .alert($store.scope(state: \.alert, action: \.alert))
         .sheet(item: $store.scope(state: \.destination, action: \.destination)) { store in
-            switch store.case {
+            NavigationStack {
+                switch store.case {
                 case let .winemaker(store):
                     MultipleChoiceSelectionView(store: store)
                         .presentationDetents([.medium, .large])
-
+                    
                 case let .grapeVarieties(store):
                     MultipleChoiceSelectionView(store: store)
                         .presentationDetents([.medium, .large])
+                    
+                case let .bottlingLocation(store):
+                    BottlingLocationSelectionView(store: store)
+                        .presentationDetents([.medium, .large])
+                }
             }
         }
         .navigationTitle("Add a wine")
@@ -82,7 +91,6 @@ public struct WineFeatureAddWineView: View {
                     .accessibilityHidden(true)
             }
             .accessibilityHint("Select or edit the winemaker")
-            .cornerRadius(8)
         }
     }
 
@@ -99,7 +107,22 @@ public struct WineFeatureAddWineView: View {
                     .accessibilityHidden(true)
             }
             .accessibilityHint("Select or edit grape varieties")
-            .cornerRadius(8)
+        }
+    }
+
+    @ViewBuilder var bottlingLocationSelectionButton: some View {
+        Button {
+            store.send(.selectBottlingLocationButtonTapped)
+        } label: {
+            HStack {
+                Text(store.bottlingLocation?.name ?? "Select Bottling Location")
+
+                Spacer()
+
+                Image(systemName: store.bottlingLocation == nil ? "chevron.right" : "square.and.pencil")
+                    .accessibilityHidden(true)
+            }
+            .accessibilityHint("Select or edit the bottling location")
         }
     }
 }

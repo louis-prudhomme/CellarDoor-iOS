@@ -45,6 +45,7 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: ClientError>: View
         CellarButton("Select \(store.selectedChoices.count)", isDisabled: store.isLoading) {
             store.send(.submitSelectedChoicesButtonTapped)
         }
+        .buttonStyle(.borderedProminent)
         .padding()
     }
 }

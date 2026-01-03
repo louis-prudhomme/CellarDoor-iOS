@@ -7,6 +7,7 @@ let project = Project.project(
     dependencies: [
         .module(at: "Shared/SharedCommonArchitecture"),
         .module(at: "Shared/SharedCommonDesignSystem"),
+        .module(at: "Wine/WineCommonLocationClient"),
         .module(at: "Wine/WineInteractor")
     ]
 )

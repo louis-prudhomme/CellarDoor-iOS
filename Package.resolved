@@ -1,5 +1,5 @@
 {
-  "originHash" : "7f2c50d0f8a04d62f58cea572fa9cafedd4393a62685905dd75dfec8d32ef0fd",
+  "originHash" : "172c1110e0ae7701c1af196894699ec7d0e55ac587ca5723378672b99208bbc9",
   "pins" : [
     {
       "identity" : "combine-schedulers",
@@ -125,6 +125,15 @@
       "state" : {
         "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
         "version" : "602.0.0"
+      }
+    },
+    {
+      "identity" : "urlqueryitemcoder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kylehughes/URLQueryItemCoder",
+      "state" : {
+        "revision" : "a828b3bb5b273adf85a3ca95d9705987cb2de7c7",
+        "version" : "1.0.0"
       }
     },
     {

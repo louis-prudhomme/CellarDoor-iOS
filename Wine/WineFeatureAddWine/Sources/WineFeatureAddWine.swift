@@ -12,7 +12,8 @@ public struct WineFeatureAddWine {
         var millesime: Int
         var winemaker: Winemaker?
         var grapeVarieties = [GrapeVariety]()
-        var abv = 12.5
+        var abv = 12.5 // TODO: replace by the median ABV of existing wines
+        var bottlingLocation: WineBottlingLocation?
         var isLoading = false
 
         @Presents var alert: AlertState<Never>?
@@ -30,20 +31,19 @@ public struct WineFeatureAddWine {
     public enum Destination {
         case winemaker(MultipleChoiceSelection<Winemaker, WineInteractorError>)
         case grapeVarieties(MultipleChoiceSelection<GrapeVariety, WineInteractorError>)
+        case bottlingLocation(BottlingLocationSelection)
     }
 
     public enum Action: BindableAction {
         case submitButtonTapped
         case selectWinemakerButtonTapped
         case selectGrapeVarietiesButtonTapped
+        case selectBottlingLocationButtonTapped
         case wineAdded(VoidResult<WineInteractorError>)
 
         case alert(PresentationAction<Never>)
         case destination(PresentationAction<Destination.Action>)
         case binding(BindingAction<State>)
-
-        case delegate(Delegate)
-        public enum Delegate: Equatable {}
     }
 
     public init() {}
@@ -57,9 +57,23 @@ public struct WineFeatureAddWine {
         Reduce { state, action in
             switch action {
                 case .submitButtonTapped:
-                    return .run { [upsert = wineInteractor.upsert, name = state.name, millesime = state.millesime, abv = state.abv, grapeVarieties = state.grapeVarieties, winemaker = state.winemaker] send in
-                        let wine = WineBottle(name: name, millesime: millesime, abv: abv, grapeVarieties: grapeVarieties, winemaker: winemaker)
-                        await send(.wineAdded(upsert(wine)))
+                    // TODO: create a PartialWineBottle type to delegate validation to the interactor
+                    guard let bottlingLocation = state.bottlingLocation else {
+                        return .run { send in await send(.wineAdded(.failure(WineInteractorError.bottlingLocationMissing))) }
+                    }
+
+                    return .run { [
+                        upsert = wineInteractor.upsert,
+                        name = state.name,
+                        millesime = state.millesime,
+                        abv = state.abv,
+                        bottlingLocation,
+                        grapeVarieties = state.grapeVarieties,
+                        winemaker = state.winemaker
+                    ] send in
+                        let wine = WineBottle(name: name, millesime: millesime, abv: abv, bottlingLocation: bottlingLocation, grapeVarieties: grapeVarieties, winemaker: winemaker)
+                        let result = await upsert(wine)
+                        await send(.wineAdded(result))
                     }
 
                 case .selectWinemakerButtonTapped:
@@ -88,6 +102,10 @@ public struct WineFeatureAddWine {
                     ))
                     return .none
 
+                case .selectBottlingLocationButtonTapped:
+                    state.destination = .bottlingLocation(BottlingLocationSelection.State(existing: state.bottlingLocation?.name))
+                    return .none
+
                 case let .wineAdded(.failure(error)):
                     state.isLoading = false
                     state.alert = AlertState {
@@ -109,6 +127,11 @@ public struct WineFeatureAddWine {
                     state.destination = nil
                     return .none
 
+                case let .destination(.presented(.bottlingLocation(.delegate(.locationSelected(location))))):
+                    state.bottlingLocation = location
+                    state.destination = nil
+                    return .none
+
                 case .destination:
                     return .none
 
@@ -116,9 +139,6 @@ public struct WineFeatureAddWine {
                     return .none
 
                 case .binding:
-                    return .none
-
-                case .delegate:
                     return .none
             }
         }
