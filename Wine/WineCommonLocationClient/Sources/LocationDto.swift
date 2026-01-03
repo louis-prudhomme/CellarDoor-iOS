@@ -17,8 +17,8 @@ public struct GeoNameDTO: Codable {
     public let adminName3: String? // 373
     public let adminCode4: String? // Mosnes
     public let adminName4: String? // 37530
-    public let adminCode5: String? // Districts
-    public let adminName5: String? // Marseille 8
+    public let adminCode5: String? // 8
+    public let adminName5: String? // Marseille 8e
     public let population: Int?
     public let elevation: Int?
     public let timezone: Timezone?
@@ -106,24 +106,23 @@ struct GeoNamesStatusDto: Codable {
 // MARK: - Query Parameters
 
 public struct GeoNamesQueryParameters: Codable {
-    // one of query / placename is required, but placename is better suited for our use case
+    // one of `query` / `placename` is required, but placename is better suited for our use case
     let placename: String
     let maxRows: Int
-    let countryBias: String
+    let countryBias: [String]
     let languageCode: String // 2-letter ISO code
     let responseStyle: ResponseStyle
-    let featureClass: FeatureClass // FIXME: we'd like several, but URLQueryItemEncoder is busted
-    // let featureCode: String = "PPL&featureCode=PPLA3&featureCode=PPLA4" // TODO: should be an enum - PPLAx are for admin divisions (ex: Saumur is PPLA3) but URLQueryItemEncoder is busted
+    let featureClass: [FeatureClass]
+    let featureCode: [FeatureCode]
 
     enum CodingKeys: String, CodingKey {
-        // case query = "q"
         case placename = "name"
         case maxRows
         case countryBias
         case languageCode = "lang"
         case responseStyle = "style"
         case featureClass
-        // case featureCode
+        case featureCode
     }
 }
 
@@ -132,7 +131,8 @@ public extension GeoNamesQueryParameters {
         case short = "SHORT"
         case medium = "MEDIUM"
         case long = "LONG"
-        case full = "FULL" // the only one with all administrative divisions
+        /// All administrative divisions
+        case full = "FULL"
     }
 }
 
@@ -155,10 +155,11 @@ extension GeoNamesQueryParameters {
         return GeoNamesQueryParameters(
             placename: name,
             maxRows: maxRows,
-            countryBias: "FR",
+            countryBias: ["FR", "IT", "ES"],
             languageCode: languageCode,
             responseStyle: .full,
-            featureClass: .P
+            featureClass: [.P],
+            featureCode: [.PPL, .PPLA3, .PPLA4]
         )
     }
 }

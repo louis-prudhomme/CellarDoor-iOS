@@ -54,14 +54,11 @@ private func performGeoNamesRequest<T>(
         return .failure(.invalidURL)
     }
 
-    let encoder = URLQueryItemEncoder(dateStrategy: .secondsSince1970)
+    let encoder = URLQueryItemEncoder(unkeyedIntMaxEncodingStrategy: .repeated)
     guard var queryItems = try? encoder.encode(queryParameters) else {
         return .failure(.encodingError)
     }
 
-    queryItems.append(URLQueryItem(name: "featureCode", value: "PPL")) // TODO: remove me
-    queryItems.append(URLQueryItem(name: "featureCode", value: "PPLA3")) // TODO: remove me
-    queryItems.append(URLQueryItem(name: "featureCode", value: "PPLA4")) // TODO: remove me
     queryItems.append(URLQueryItem(name: "username", value: username))
 
     urlComponents.queryItems = queryItems
