@@ -96,12 +96,6 @@ struct GeoNamesSearchDTO: Codable {
     let geonames: [GeoNameDTO]?
     let status: GeoNamesStatusDto?
     let totalResultsCount: Int?
-
-    init(geonames: [GeoNameDTO]?, status: GeoNamesStatusDto?, totalResultsCount: Int?) {
-        self.geonames = geonames
-        self.status = status
-        self.totalResultsCount = totalResultsCount
-    }
 }
 
 struct GeoNamesStatusDto: Codable {
@@ -119,7 +113,7 @@ public struct GeoNamesQueryParameters: Codable {
     let languageCode: String // 2-letter ISO code
     let responseStyle: ResponseStyle
     let featureClass: FeatureClass // FIXME: we'd like several, but URLQueryItemEncoder is busted
-    //let featureCode: String = "PPL&featureCode=PPLA3&featureCode=PPLA4" // TODO: should be an enum - PPLAx are for admin divisions (ex: Saumur is PPLA3) but URLQueryItemEncoder is busted
+    // let featureCode: String = "PPL&featureCode=PPLA3&featureCode=PPLA4" // TODO: should be an enum - PPLAx are for admin divisions (ex: Saumur is PPLA3) but URLQueryItemEncoder is busted
 
     enum CodingKeys: String, CodingKey {
         // case query = "q"
@@ -129,7 +123,7 @@ public struct GeoNamesQueryParameters: Codable {
         case languageCode = "lang"
         case responseStyle = "style"
         case featureClass
-        //case featureCode
+        // case featureCode
     }
 }
 
