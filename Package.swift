@@ -15,7 +15,7 @@ let packageSettings = PackageSettings(
         "IssueReporting": .framework,
         "IssueReportingPackageSupport": .framework,
         "XCTestDynamicOverlay": .framework,
-        "URLQueryItemCoder": .staticFramework
+        "URLQueryItemCoder": .framework
     ]
 )
 #endif
