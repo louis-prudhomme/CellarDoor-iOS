@@ -24,6 +24,7 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: ClientError>: View
             }
         }
         .loadable(isLoading: store.isLoading)
+        .emptyable(store.choices, searchText: store.searchText, isLoading: store.isLoading)
         .searchable(text: $store.searchText)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -37,7 +38,7 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: ClientError>: View
         .navigationDestination(item: $store.scope(state: \.destination?.addChoice, action: \.destination.addChoice)) { store in
             AddChoiceView(store: store)
         }
-        .task { store.send(.onAppear) }
+        .onAppear { store.send(.onAppear) }
         .alert($store.scope(state: \.alert, action: \.alert))
     }
 

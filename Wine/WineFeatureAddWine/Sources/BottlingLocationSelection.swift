@@ -46,11 +46,11 @@ public struct BottlingLocationSelection {
     public var body: some ReducerOf<Self> {
         BindingReducer()
 
-        Reduce {
-            state, action in
+        Reduce { state, action in
             switch action {
                 case .binding(\.searchText), .onAppear:
-                    if state.searchText.isEmpty, state.isLoading == false {
+                    guard !state.searchText.isEmpty else {
+                        state.suggestedLocations = []
                         return .none
                     }
 
@@ -60,7 +60,11 @@ public struct BottlingLocationSelection {
                         let result = await search(searchText)
                         await send(.locationsLoaded(result))
                     }
-                    .throttle(id: Cancellables.search, for: .milliseconds(300), scheduler: scheduler, latest: false)
+                    .debounce(
+                        id: Cancellables.search,
+                        for: .milliseconds(300),
+                        scheduler: scheduler
+                    )
 
                 case let .locationsLoaded(.success(locations)):
                     state.isLoading = false

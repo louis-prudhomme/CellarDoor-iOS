@@ -1,5 +1,6 @@
 import SharedCommonArchitecture
 import SharedCommonDependencies
+import SharedCommonDesignSystem
 import SwiftUI
 import WineCommonLocationClient
 
@@ -11,20 +12,15 @@ struct BottlingLocationSelectionView: View {
     }
 
     var body: some View {
-        VStack {
-            if store.isLoading {
-                ProgressView()
-            } else {
-                List(store.suggestedLocations, id: \.id) { location in
-                    Button {
-                        store.send(.locationSelected(location))
-                    } label: {
-                        LocationView(location: location)
-                    }
-                }
+        List(store.suggestedLocations, id: \.id) { location in
+            Button {
+                store.send(.locationSelected(location))
+            } label: {
+                LocationView(location: location)
             }
         }
-        .task { store.send(.onAppear) }
+        .emptyable(store.suggestedLocations, searchText: store.searchText, isLoading: store.isLoading)
+        .onAppear { store.send(.onAppear) }
         .loadable(isLoading: store.isLoading)
         .searchable(text: $store.searchText)
         .navigationTitle(navigationTitle)

@@ -23,7 +23,17 @@ public struct WineFeatureListWineView: View {
             }
         }
         .alert($store.scope(state: \.alert, action: \.alert))
-        .task { store.send(.screenAppeared) }
+        .onAppear { store.send(.screenAppeared) }
+        .overlay {
+            if store.wines.isEmpty {
+                ContentUnavailableView(
+                    "No wines yet.",
+                    systemImage: "arrow.up.right",
+                    description: Text("Try adding some!")
+                )
+                .symbolVariant(.none)
+            }
+        }
         .refreshable { store.send(.screenPulled) }
         .navigationTitle("Wines")
         .toolbar {
