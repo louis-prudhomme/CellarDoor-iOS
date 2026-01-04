@@ -25,8 +25,7 @@ public struct WineFeatureListWineView: View {
         .onAppear { store.send(.screenAppeared) }
     }
 
-    @ViewBuilder
-    var emptyDisplay: some View {
+    @ViewBuilder var emptyDisplay: some View {
         ContentUnavailableView(
             "No wines yet.",
             systemImage: "arrow.up.right",
@@ -35,8 +34,7 @@ public struct WineFeatureListWineView: View {
         .symbolVariant(.none)
     }
 
-    @ToolbarContentBuilder
-    var toolbarContent: some ToolbarContent {
+    @ToolbarContentBuilder var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button("Return to Root", systemImage: "xmark") {
                 store.send(.delegate(.popToRoot))

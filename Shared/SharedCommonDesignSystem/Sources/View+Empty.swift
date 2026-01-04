@@ -25,11 +25,11 @@ private struct EmptyableViewModifier<SearchResult, Description: View>: ViewModif
 }
 
 public extension View {
-    func emptyable<SearchResult, Description: View>(
-        _ results: [SearchResult],
+    func emptyable(
+        _ results: [some Any],
         searchText: String,
         isLoading: Bool = false,
-        description: @escaping () -> Description = { ContentUnavailableView.search }
+        description: @escaping () -> some View = { ContentUnavailableView.search }
     ) -> some View {
         modifier(
             EmptyableViewModifier(

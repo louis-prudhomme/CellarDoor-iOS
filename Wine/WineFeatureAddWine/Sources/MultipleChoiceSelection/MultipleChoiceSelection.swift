@@ -113,7 +113,7 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: ClientError> {
                         await send(.choiceCreationFinished(result))
                     }
 
-                case .choiceCreationFinished(.success(let choice)):
+                case let .choiceCreationFinished(.success(choice)):
                     state.isCreatingChoice = false
                     state.searchText = ""
                     return .run { [choice] send in
@@ -121,7 +121,7 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: ClientError> {
                         await send(.choiceSelected(choice))
                     }
 
-                case .choiceCreationFinished(.failure(let error)):
+                case let .choiceCreationFinished(.failure(error)):
                     state.alert = AlertState {
                         TextState(error.localizedDescription)
                     }
