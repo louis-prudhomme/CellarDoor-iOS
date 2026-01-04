@@ -7,20 +7,20 @@ public struct WineCoordinator {
     @ObservableState
     public struct State: Equatable {
         var list = WineFeatureListWine.State()
-        var path = StackState<Path.State>()
+        var destination = StackState<Destination.State>()
 
         public init() {}
     }
 
     public enum Action {
         case list(WineFeatureListWine.Action)
-        case path(StackActionOf<Path>)
+        case destination(StackActionOf<Destination>)
     }
 
     // MARK: - Destinations
 
     @Reducer
-    public enum Path {
+    public enum Destination {
         case addWine(WineFeatureAddWine)
     }
 
@@ -38,7 +38,7 @@ public struct WineCoordinator {
                 // MARK: - List Actions
 
                 case .list(.delegate(.addButtonTapped)):
-                    state.path.append(.addWine(WineFeatureAddWine.State()))
+                    state.destination.append(.addWine(WineFeatureAddWine.State()))
                     return .none
 
                 // MARK: - Leaf Actions
@@ -50,9 +50,9 @@ public struct WineCoordinator {
                     return .none
             }
         }
-        .forEach(\.path, action: \.path)
+        .forEach(\.destination, action: \.destination)
     }
 }
 
 /// Necessary to make StackState work
-extension WineCoordinator.Path.State: Equatable {}
+extension WineCoordinator.Destination.State: Equatable {}

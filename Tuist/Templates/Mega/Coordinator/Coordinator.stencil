@@ -7,19 +7,19 @@ public struct {{ group }}Coordinator {
     @ObservableState
     public struct State: Equatable {
         var list = {{ group }}FeatureList{{ group }}.State()
-        var path = StackState<Path.State>()
+        var destination = StackState<Destination.State>()
 
         public init() {}
     }
     
     public enum Action {
         case list({{ group }}FeatureList{{ group }}.Action)
-        case path(StackActionOf<Path>)
+        case destination(StackActionOf<Destination>)
     }
     
     // MARK: - Destinations
     @Reducer
-    public enum Path {
+    public enum Destination {
         case add{{ group }}({{ group }}FeatureAdd{{ group }})
     }
 
@@ -36,7 +36,7 @@ public struct {{ group }}Coordinator {
             switch action {
                 // MARK: - List Actions
                 case .list(.delegate(.addButtonTapped)):
-                    state.path.append(.add{{ group }}({{ group }}FeatureAdd{{ group }}.State()))
+                    state.destination.append(.add{{ group }}({{ group }}FeatureAdd{{ group }}.State()))
                     return .none
                 
                 // MARK: - Leaf Actions
@@ -47,9 +47,9 @@ public struct {{ group }}Coordinator {
                     return .none
             }
         }
-        .forEach(\.path, action: \.path)
+        .forEach(\.destination, action: \.destination)
     }
 }
 
 // Necessary to make StackState work
-extension {{ group }}Coordinator.Path.State: Equatable {}
+extension {{ group }}Coordinator.Destination.State: Equatable {}

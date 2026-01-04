@@ -11,7 +11,7 @@ public struct WineCoordinatorView: View {
     }
 
     public var body: some View {
-        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
+        NavigationStack(path: $store.scope(state: \.destination, action: \.destination)) {
             WineFeatureListWineView(
                 store: store.scope(state: \.list, action: \.list)
             )
