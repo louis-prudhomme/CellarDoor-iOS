@@ -16,7 +16,7 @@ public final class WineBottlingLocationEntity: IdentifiableEntity {
     @Attribute public var providerId: Int // GeoNames ID
     @Attribute public var createdAt: Date
 
-    @Relationship(deleteRule: .nullify, inverse: \WineBottleEntity.bottlingLocation) public var wines: [WineBottleEntity]?
+    @Relationship(deleteRule: .cascade, inverse: \WineBottleEntity.bottlingLocation) public var wines: [WineBottleEntity]?
 
     public init(
         id: UUID,
