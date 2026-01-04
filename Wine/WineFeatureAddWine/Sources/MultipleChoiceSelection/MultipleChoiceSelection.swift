@@ -17,6 +17,7 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: ClientError> {
         public var choices = [Choice]()
         public var selectedChoices = [Choice]()
         public var isLoading = false
+        public var isCreatingChoice = false
 
         public init(title: String, isMultiSelect: Bool, delegate: MultipleChoiceInteractorDelegate<Choice, IError>) {
             self.title = title
@@ -44,6 +45,8 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: ClientError> {
         case submitSelectedChoicesButtonTapped
 
         case addChoiceButtonTapped
+        case createChoiceButtonTapped
+        case choiceCreationFinished(Result<Choice, IError>)
 
         case destination(PresentationAction<Destination.Action>)
         case alert(PresentationAction<Never>)
@@ -101,6 +104,27 @@ public struct MultipleChoiceSelection<Choice: Choosable, IError: ClientError> {
                         title: state.title,
                         delegate: state.delegate
                     ))
+                    return .none
+
+                case .createChoiceButtonTapped:
+                    state.isCreatingChoice = true
+                    return .run { [delegate = state.delegate, searchText = state.searchText] send in
+                        let result = await delegate.createChoice(searchText)
+                        await send(.choiceCreationFinished(result))
+                    }
+
+                case .choiceCreationFinished(.success(let choice)):
+                    state.isCreatingChoice = false
+                    state.searchText = ""
+                    return .run { [choice] send in
+                        await send(.onAppear)
+                        await send(.choiceSelected(choice))
+                    }
+
+                case .choiceCreationFinished(.failure(let error)):
+                    state.alert = AlertState {
+                        TextState(error.localizedDescription)
+                    }
                     return .none
 
                 case let .destination(.presented(.addChoice(.delegate(.choiceAdded(choice))))):

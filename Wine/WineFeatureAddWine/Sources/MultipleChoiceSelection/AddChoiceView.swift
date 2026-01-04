@@ -43,7 +43,7 @@ private enum ExampleEmptyError: ClientError {}
 #Preview {
     let delegate = MultipleChoiceInteractorDelegate<Example, ExampleEmptyError>(
         fetchChoices: { _ in .success([]) },
-        createChoice: { _ in .success },
+        createChoice: { _ in .success(Example()) },
         getDisplayName: { $0.name }
     )
     let state = AddChoice.State(
