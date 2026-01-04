@@ -1,9 +1,10 @@
 import SwiftUI
 
-private struct EmptyableViewModifier<SearchResult>: ViewModifier {
+private struct EmptyableViewModifier<SearchResult, Description: View>: ViewModifier {
     let results: [SearchResult]
     let searchText: String
     let isLoading: Bool
+    let description: () -> Description
 
     func body(content: Content) -> some View {
         content.overlay {
@@ -16,7 +17,7 @@ private struct EmptyableViewModifier<SearchResult>: ViewModifier {
                     )
                     .symbolVariant(.none)
                 } else {
-                    ContentUnavailableView.search
+                    description()
                 }
             }
         }
@@ -24,7 +25,19 @@ private struct EmptyableViewModifier<SearchResult>: ViewModifier {
 }
 
 public extension View {
-    func emptyable<SearchResult>(_ results: [SearchResult], searchText: String, isLoading: Bool = false) -> some View {
-        modifier(EmptyableViewModifier(results: results, searchText: searchText, isLoading: isLoading))
+    func emptyable<SearchResult, Description: View>(
+        _ results: [SearchResult],
+        searchText: String,
+        isLoading: Bool = false,
+        description: @escaping () -> Description = { ContentUnavailableView.search }
+    ) -> some View {
+        modifier(
+            EmptyableViewModifier(
+                results: results,
+                searchText: searchText,
+                isLoading: isLoading,
+                description: description
+            )
+        )
     }
 }

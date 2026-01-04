@@ -52,10 +52,15 @@ struct MultipleChoiceSelectionView<Choice: Choosable, IError: ClientError>: View
 
     var emptyCta: some View {
         VStack {
-            Text("Do you want to create a \(store.title)?")
-
-            Button("Create \(store.searchText)") {
-                store.send(.createChoiceButtonTapped)
+            ContentUnavailableView {
+                Label("No results.", systemImage: "magnifyingglass")
+            } description: {
+                Text("Do you need to create a \(store.title)?")
+            } actions: {
+                Button("Create \(store.searchText)") {
+                    store.send(.createChoiceButtonTapped)
+                }
+                .buttonStyle(.bordered)
             }
         }
     }
