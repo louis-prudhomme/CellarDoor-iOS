@@ -5,9 +5,10 @@ public struct {{ group }}Feature{{ name }} {
     @ObservableState
     public struct State: Equatable {
 
+        public init() {}
     }
-    
-    public enum Action: Equatable {
+
+    public enum Action {
         case something
         
         case delegate(Delegate)
@@ -17,7 +18,9 @@ public struct {{ group }}Feature{{ name }} {
             case popToRoot
         }
     }
-    
+
+    public init() {}
+
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {

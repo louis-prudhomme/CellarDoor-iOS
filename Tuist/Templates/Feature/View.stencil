@@ -5,10 +5,8 @@ public struct {{ group }}Feature{{ name }}View: View {
     let store: StoreOf<{{ group }}Feature{{ name }}>
 
     public var body: some View {
-        WithViewStore(store, observe: { $0 }) { viewStore in
-            VStack {
-                Text("{{ group }} {{ name }}")
-            }
+        VStack {
+            Text("{{ group }} {{ name }}")
         }
     }
 }

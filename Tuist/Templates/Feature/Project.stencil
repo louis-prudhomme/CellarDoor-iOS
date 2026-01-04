@@ -6,9 +6,7 @@ let project = Project.project(
     hasResources: false,
     dependencies: [
         .module(at: "Shared/SharedCommonArchitecture"),
-        /*
-        .module(at: "Shared/SharedCommonUtilities"),
-        */
+        // .module(at: "Shared/SharedCommonUtilities"),
         .module(at: "Shared/SharedCommonDesignSystem")
     ],
 )
@@ -16,8 +14,5 @@ let project = Project.project(
 /*
 To use this feature in a Coordinator, add this to the Coordinator's Project.swift:
 ```swift
-.project(
-    target: "{{ group }}Feature{{ name }}",
-    path: .relativeToRoot("{{ group }}/{{ group }}Feature{{ name }}")
-),
+.module(at: "{{ group }}/{{ group }}Feature{{ name }}"),
 */

@@ -11,11 +11,11 @@ let template = Template(
     ],
     items: [
         .file(
-            path: "\(groupAttribute)/\(groupAttribute)Feature\(nameAttribute)/Sources/\(nameAttribute)Feature.swift",
+            path: "\(groupAttribute)/\(groupAttribute)Feature\(nameAttribute)/Sources/\(groupAttribute)Feature\(nameAttribute).swift",
             templatePath: "Reducer.stencil"
         ),
         .file(
-            path: "\(groupAttribute)/\(groupAttribute)Feature\(nameAttribute)/Sources/\(nameAttribute)View.swift",
+            path: "\(groupAttribute)/\(groupAttribute)Feature\(nameAttribute)/Sources/\(groupAttribute)Feature\(nameAttribute)View.swift",
             templatePath: "View.stencil"
         ),
         .file(
