@@ -26,6 +26,7 @@ public struct WineFeatureListWine {
         public enum Delegate: Equatable {
             case addButtonTapped
             case popToRoot
+            case wineTapped(WineBottle)
         }
     }
 

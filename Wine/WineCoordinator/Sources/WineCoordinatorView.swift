@@ -2,6 +2,7 @@ import SharedCommonArchitecture
 import SwiftUI
 import WineFeatureAddWine
 import WineFeatureListWine
+import WineFeatureShowWine
 
 public struct WineCoordinatorView: View {
     @Bindable var store: StoreOf<WineCoordinator>
@@ -19,6 +20,8 @@ public struct WineCoordinatorView: View {
             switch store.case {
                 case let .addWine(store):
                     WineFeatureAddWineView(store: store)
+                case let .showWine(store):
+                    WineFeatureShowWineView(store: store)
                 @unknown default:
                     Text("Unimplemented destination")
             }

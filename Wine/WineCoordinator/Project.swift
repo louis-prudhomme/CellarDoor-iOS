@@ -7,12 +7,14 @@ let project = Project.project(
     dependencies: [
         .module(at: "Shared/SharedCommonArchitecture"),
         .module(at: "Wine/WineFeatureListWine"),
-        .module(at: "Wine/WineFeatureAddWine")
+        .module(at: "Wine/WineFeatureAddWine"),
+        .module(at: "Wine/WineFeatureShowWine")
     ]
 )
 
 /*
- Add to your App target's Project.swift to use this Coordinator:
- ```swift
- .module(at: "Wine/WineCoordinator"),
- */
+  Add to your App target's Project.swift to use this Coordinator:
+  ```swift
+  .module(at: "Wine/WineCoordinator"),
+ ```
+  */

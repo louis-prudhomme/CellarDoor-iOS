@@ -1,6 +1,7 @@
 import SharedCommonArchitecture
 import WineFeatureAddWine
 import WineFeatureListWine
+import WineFeatureShowWine
 
 @Reducer
 public struct WineCoordinator {
@@ -22,6 +23,7 @@ public struct WineCoordinator {
     @Reducer
     public enum Destination {
         case addWine(WineFeatureAddWine)
+        case showWine(WineFeatureShowWine)
     }
 
     @Dependency(\.dismiss) var dismiss
@@ -45,6 +47,10 @@ public struct WineCoordinator {
 
                 case .list(.delegate(.popToRoot)):
                     return .run { [dismiss] _ in await dismiss() }
+
+                case let .list(.delegate(.wineTapped(wine))):
+                    state.destination.append(.showWine(WineFeatureShowWine.State(bottle: wine)))
+                    return .none
 
                 default:
                     return .none

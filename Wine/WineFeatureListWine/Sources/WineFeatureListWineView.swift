@@ -17,7 +17,7 @@ public struct WineFeatureListWineView: View {
             } else {
                 List {
                     ForEach(store.wines) { bottle in
-                        WineBottleView(bottle: bottle)
+                        WineBottleView(store: store, bottle: bottle)
                     }
                 }
             }
@@ -44,23 +44,40 @@ public struct WineFeatureListWineView: View {
 
 extension WineFeatureListWineView {
     struct WineBottleView: View {
+        @Environment(\.layoutDirection) var layoutDirection
+
+        let store: StoreOf<WineFeatureListWine>
         let bottle: WineBottle
 
         var body: some View {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(
-                    """
-                    \(Text(bottle.name)) - \
-                    \(Text(bottle.millesime.formatted(.number.grouping(.never)))
-                        .foregroundStyle(.secondary))
-                    """
-                )
-                .font(.headline)
+            Button { 
+                store.send(.delegate(.wineTapped(bottle)))
+            } label: {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(
+                            """
+                            \(Text(bottle.name)) - \
+                            \(Text(bottle.millesime.formatted(.number.grouping(.never)))
+                                .foregroundStyle(.secondary))
+                            """
+                        )
+                        .font(.headline)
 
-                Text(bottle.grapeVarieties.map(\.name).joined(separator: ", "))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                        Text(bottle.grapeVarieties.map(\.name).joined(separator: ", "))
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(.secondary)
+                        .accessibilityHidden(true)
+                }
             }
+            .buttonStyle(.plain)
+            .accessibilityHint(Text("Tap to see more details."))
         }
     }
 }
