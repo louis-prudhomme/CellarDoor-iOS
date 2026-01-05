@@ -52,6 +52,37 @@ public extension Project {
     ) -> Project {
         let sanitizedName = name.replacingOccurrences(of: " ", with: "")
 
+        var targets: [Target] = [
+            .target(
+                name: sanitizedName,
+                destinations: .iOS,
+                product: .app,
+                bundleId: "\(organization).\(sanitizedName)",
+                deploymentTargets: .iOS("17.0"),
+                infoPlist: .extendingDefault(with: [
+                    "UILaunchScreen": [:]
+                ]),
+                sources: ["Sources/**"],
+                resources: ["Resources/**"],
+                scripts: [],
+                dependencies: dependencies
+            )
+        ]
+
+        targets.append(
+            .target(
+                name: "\(sanitizedName)Tests",
+                destinations: .iOS,
+                product: .unitTests,
+                bundleId: "\(organization).\(sanitizedName)-Tests",
+                infoPlist: .default,
+                sources: ["Tests/**"],
+                dependencies: [
+                    .target(name: sanitizedName)
+                ]
+            )
+        )
+
         return Project(
             name: sanitizedName,
             organizationName: organization,
@@ -63,22 +94,7 @@ public extension Project {
                 base: commonSettings,
                 configurations: configurations
             ),
-            targets: [
-                .target(
-                    name: sanitizedName,
-                    destinations: .iOS,
-                    product: .app,
-                    bundleId: "\(organization).\(sanitizedName)",
-                    deploymentTargets: .iOS("17.0"),
-                    infoPlist: .extendingDefault(with: [
-                        "UILaunchScreen": [:]
-                    ]),
-                    sources: ["Sources/**"],
-                    resources: ["Resources/**"],
-                    scripts: [],
-                    dependencies: dependencies
-                )
-            ]
+            targets: targets
         )
     }
 }
