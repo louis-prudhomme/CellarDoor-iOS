@@ -16,6 +16,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up SwiftLint
+        uses: cirruslabs/swiftlint-action@v1
+        with:
+          version: latest
+
       - name: Get changed Swift files
         id: changed-files
         run: |
