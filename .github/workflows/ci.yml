@@ -107,9 +107,6 @@ jobs:
       - name: Fetch dependencies
         run: tuist install
 
-      - name: Generate Xcode project
-        run: tuist generate --no-open
-
       - name: Configure simulators
         run: |
           echo "🔎 Looking up simulators..."
@@ -118,15 +115,14 @@ jobs:
           echo "📱 Configuring iOS Simulator..."
           xcrun simctl create "${{ env.IOS_SIMULATOR_NAME }}" com.apple.CoreSimulator.SimDeviceType.${{ env.IOS_SIMULATOR_TYPE }} com.apple.CoreSimulator.SimRuntime.iOS-$(echo ${{ env.IOS_SIMULATOR_VERSION }} | tr '.' '-')
 
+      - name: Generate Xcode project
+        run: tuist generate --no-open
+
       - name: Build & Test
         run: |
           echo "🔨 Building and testing project..."
           set -o pipefail
-          tuist xcodebuild clean build test \
-            -workspace CellarDoor.xcworkspace \
-            -scheme CellarDoor \
-            -destination "platform=iOS Simulator,name=${{ env.IOS_SIMULATOR_NAME }},OS=${{ env.IOS_SIMULATOR_VERSION }}" \
-            -configuration Debug | xcpretty --color --simple
+          tuist test --scheme CellarDoor --destination "platform=iOS Simulator,name=${{ env.IOS_SIMULATOR_NAME }},OS=${{ env.IOS_SIMULATOR_VERSION }}" | xcpretty --report junit --output build/reports/junit.xml
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
