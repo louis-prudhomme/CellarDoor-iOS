@@ -16,11 +16,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up SwiftLint
-        uses: cirruslabs/swiftlint-action@v1
-        with:
-          version: latest
-
       - name: Get changed Swift files
         id: changed-files
         run: |
@@ -44,7 +39,13 @@ jobs:
             echo "$CHANGED_FILES" > changed_swift_files.txt
           fi
 
-      - name: Run SwiftFormat check
+      - name: SwiftLint check
+        uses: cirruslabs/swiftlint-action@v1
+        if: steps.changed-files.outputs.has-changes == 'true'
+        with:
+          version: latest
+
+      - name: SwiftFormat check
         if: steps.changed-files.outputs.has-changes == 'true'
         run: |
           echo "🔍 Checking SwiftFormat compliance on changed files..."
@@ -64,29 +65,6 @@ jobs:
           if [ $EXIT_CODE -ne 0 ]; then
             echo ""
             echo "💡 To fix formatting issues, run: swiftformat ."
-            exit $EXIT_CODE
-          fi
-
-      - name: Run SwiftLint
-        if: steps.changed-files.outputs.has-changes == 'true'
-        run: |
-          echo "🔍 Running SwiftLint on changed files..."
-          EXIT_CODE=0
-          while IFS= read -r file; do
-            if [ -f "$file" ]; then
-              echo "Linting: $file"
-              if ! swiftlint lint --path "$file" --quiet; then
-                echo "❌ SwiftLint violations found in: $file"
-                EXIT_CODE=1
-              else
-                echo "✅ SwiftLint passed: $file"
-              fi
-            fi
-          done < changed_swift_files.txt
-
-          if [ $EXIT_CODE -ne 0 ]; then
-            echo ""
-            echo "💡 To fix SwiftLint issues, run: swiftlint --fix"
             exit $EXIT_CODE
           fi
 
