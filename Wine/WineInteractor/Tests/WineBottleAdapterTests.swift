@@ -17,8 +17,9 @@ struct WineBottleAdapterTests {
         let entity = WineBottleEntity(
             id: TestHelpers.testID,
             name: "Romanée-Conti Grand Cru",
-            millesime: 2019,
+            millesime: 2_019,
             abv: 13.5,
+            picture: TestHelpers.testPicture,
             bottlingLocation: locationEntity,
             grapeVarieties: [grapeEntity],
             createdAt: TestHelpers.testDate,
@@ -33,8 +34,9 @@ struct WineBottleAdapterTests {
 
         #expect(domain.id == TestHelpers.testID)
         #expect(domain.name == "Romanée-Conti Grand Cru")
-        #expect(domain.millesime == 2019)
+        #expect(domain.millesime == 2_019)
         #expect(domain.abv == 13.5)
+        #expect(domain.picture == TestHelpers.testPicture)
         #expect(domain.createdAt == TestHelpers.testDate)
         #expect(domain.grapeVarieties.count == 1)
         #expect(domain.grapeVarieties[0].name == "Pinot Noir")
@@ -50,8 +52,9 @@ struct WineBottleAdapterTests {
         let entity = WineBottleEntity(
             id: TestHelpers.testID,
             name: "Test Wine",
-            millesime: 2020,
+            millesime: 2_020,
             abv: 12.0,
+            picture: TestHelpers.testPicture,
             bottlingLocation: locationEntity,
             grapeVarieties: [grapeEntity],
             createdAt: TestHelpers.testDate,
@@ -76,8 +79,9 @@ struct WineBottleAdapterTests {
         let domain = WineBottle(
             id: TestHelpers.testID,
             name: "Romanée-Conti Grand Cru",
-            millesime: 2019,
+            millesime: 2_019,
             abv: 13.5,
+            picture: TestHelpers.testPicture,
             bottlingLocation: location,
             grapeVarieties: [grape],
             winemaker: winemaker,
@@ -92,8 +96,9 @@ struct WineBottleAdapterTests {
 
         #expect(entity.id == TestHelpers.testID)
         #expect(entity.name == "Romanée-Conti Grand Cru")
-        #expect(entity.millesime == 2019)
+        #expect(entity.millesime == 2_019)
         #expect(entity.abv == 13.5)
+        #expect(entity.picture == TestHelpers.testPicture)
         #expect(entity.createdAt == TestHelpers.testDate)
         #expect(entity.grapeVarieties.count == 1)
         #expect(entity.grapeVarieties[0].name == "Pinot Noir")
@@ -109,8 +114,9 @@ struct WineBottleAdapterTests {
         let domain = WineBottle(
             id: TestHelpers.testID,
             name: "Test Wine",
-            millesime: 2020,
+            millesime: 2_020,
             abv: 12.0,
+            picture: TestHelpers.testPicture,
             bottlingLocation: location,
             grapeVarieties: [grape],
             winemaker: nil,
@@ -131,8 +137,9 @@ struct WineBottleAdapterTests {
         let originalDomain = WineBottle(
             id: TestHelpers.testID,
             name: "Test Wine",
-            millesime: 2021,
+            millesime: 2_021,
             abv: 14.0,
+            picture: TestHelpers.testPicture,
             bottlingLocation: TestHelpers.makeTestBottlingLocation(),
             grapeVarieties: [TestHelpers.makeTestGrapeVariety()],
             winemaker: TestHelpers.makeTestWinemaker(),
@@ -155,6 +162,7 @@ struct WineBottleAdapterTests {
         #expect(convertedDomain.name == originalDomain.name)
         #expect(convertedDomain.millesime == originalDomain.millesime)
         #expect(convertedDomain.abv == originalDomain.abv)
+        #expect(convertedDomain.picture == originalDomain.picture)
         #expect(convertedDomain.bottlingLocation.name == originalDomain.bottlingLocation.name)
         #expect(convertedDomain.grapeVarieties.count == originalDomain.grapeVarieties.count)
         #expect(convertedDomain.winemaker?.name == originalDomain.winemaker?.name)
@@ -175,8 +183,9 @@ struct WineBottleAdapterTests {
         let domain = WineBottle(
             id: TestHelpers.testID,
             name: "Blend",
-            millesime: 2020,
+            millesime: 2_020,
             abv: 13.0,
+            picture: TestHelpers.testPicture,
             bottlingLocation: TestHelpers.makeTestBottlingLocation(),
             grapeVarieties: grapes,
             winemaker: nil,

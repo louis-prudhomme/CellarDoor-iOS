@@ -8,6 +8,7 @@ enum TestHelpers {
     static let testDate = Date(timeIntervalSince1970: 1_704_067_200) // 2024-01-01
     // swiftlint:disable:next force_unwrapping
     static let testID = UUID(uuidString: "12345678-1234-1234-1234-123456789012")!
+    static let testPicture = Data([0x89, 0x50, 0x4E, 0x47]) // PNG header bytes
 
     static func makeTestGrapeVarietyEntity() -> GrapeVarietyEntity {
         GrapeVarietyEntity(
@@ -60,7 +61,7 @@ enum TestHelpers {
                 countryCode: "FR",
                 regionCode: "BFC",
                 administrativeDivisions: encodedDivisions,
-                providerId: 12345,
+                providerId: 12_345,
                 createdAt: testDate
             )
         }
@@ -75,7 +76,7 @@ enum TestHelpers {
                 WineBottlingLocation.AdministrativeDivision(type: .country, name: "France", code: "FR"),
                 WineBottlingLocation.AdministrativeDivision(type: .region, name: "Burgundy", code: "BFC")
             ],
-            providerId: 12345,
+            providerId: 12_345,
             createdAt: testDate
         )
     }

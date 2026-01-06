@@ -113,6 +113,7 @@ private extension WineFeatureShowWineView.Row where Label == Text {
         name: "Château Margaux",
         millesime: 2_015,
         abv: 13.5,
+        picture: Data(),
         bottlingLocation: WineBottlingLocation(id: UUID(),
                                                name: "Moulis-en-Médoc",
                                                coordinates: .init(latitude: 44.8378, longitude: -0.5792),
