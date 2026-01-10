@@ -60,7 +60,8 @@ public extension Project {
                 bundleId: "\(organization).\(sanitizedName)",
                 deploymentTargets: .iOS("17.0"),
                 infoPlist: .extendingDefault(with: [
-                    "UILaunchScreen": [:]
+                    "UILaunchScreen": [:],
+                    "NSCameraUsageDescription": "We need access to your camera so you can capture wine bottle photos."
                 ]),
                 sources: ["Sources/**"],
                 resources: ["Resources/**"],

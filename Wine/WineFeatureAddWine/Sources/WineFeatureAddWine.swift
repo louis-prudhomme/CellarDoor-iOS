@@ -1,6 +1,7 @@
 import Foundation
 import SharedCommonArchitecture
 import SharedCommonDependencies
+import SharedCommonPictureClient
 import WineDomain
 import WineInteractor
 
@@ -14,6 +15,7 @@ public struct WineFeatureAddWine {
         var grapeVarieties = [GrapeVariety]()
         var abv = 12.5 // TODO: replace by the median ABV of existing wines
         var bottlingLocation: WineBottlingLocation?
+        var picture: Data?
         var isLoading = false
 
         @Presents var alert: AlertState<Never>?
@@ -39,6 +41,9 @@ public struct WineFeatureAddWine {
         case selectWinemakerButtonTapped
         case selectGrapeVarietiesButtonTapped
         case selectBottlingLocationButtonTapped
+        case selectPictureFromCameraButtonTapped
+        case selectPictureFromLibraryButtonTapped
+        case pictureSelected(Result<Data, PictureClientError>)
         case wineAdded(Result<WineBottle, WineInteractorError>)
 
         case alert(PresentationAction<Never>)
@@ -50,6 +55,7 @@ public struct WineFeatureAddWine {
 
     @Dependency(\.dismiss) var dismiss
     @Dependency(\.wineInteractor) var wineInteractor
+    @Dependency(\.pictureClient.selectPicture) var selectPicture
 
     public var body: some ReducerOf<Self> {
         BindingReducer()
@@ -61,6 +67,9 @@ public struct WineFeatureAddWine {
                     guard let bottlingLocation = state.bottlingLocation else {
                         return .run { send in await send(.wineAdded(.failure(WineInteractorError.bottlingLocationMissing))) }
                     }
+                    guard let pictureData = state.picture else {
+                        return .run { send in await send(.wineAdded(.failure(WineInteractorError.pictureMissing))) }
+                    }
 
                     return .run { [
                         upsert = wineInteractor.upsert,
@@ -69,9 +78,10 @@ public struct WineFeatureAddWine {
                         abv = state.abv,
                         bottlingLocation,
                         grapeVarieties = state.grapeVarieties,
-                        winemaker = state.winemaker
+                        winemaker = state.winemaker,
+                        picture = pictureData
                     ] send in
-                        let wine = WineBottle(name: name, millesime: millesime, abv: abv, bottlingLocation: bottlingLocation, grapeVarieties: grapeVarieties, winemaker: winemaker)
+                        let wine = WineBottle(name: name, millesime: millesime, abv: abv, picture: picture, bottlingLocation: bottlingLocation, grapeVarieties: grapeVarieties, winemaker: winemaker)
                         let result = await upsert(wine)
                         await send(.wineAdded(result))
                     }
@@ -104,6 +114,31 @@ public struct WineFeatureAddWine {
 
                 case .selectBottlingLocationButtonTapped:
                     state.destination = .bottlingLocation(BottlingLocationSelection.State(existing: state.bottlingLocation?.name))
+                    return .none
+
+                case .selectPictureFromCameraButtonTapped:
+                    return .run { [selectPicture] send in
+                        let result = await selectPicture(.camera)
+                        await send(.pictureSelected(result))
+                    }
+
+                case .selectPictureFromLibraryButtonTapped:
+                    return .run { [selectPicture] send in
+                        let result = await selectPicture(.photoLibrary)
+                        await send(.pictureSelected(result))
+                    }
+
+                case let .pictureSelected(.success(data)):
+                    state.picture = data
+                    return .none
+
+                case .pictureSelected(.failure(.cancelled)):
+                    return .none
+
+                case let .pictureSelected(.failure(error)):
+                    state.alert = AlertState {
+                        TextState(error.localizedDescription)
+                    }
                     return .none
 
                 case let .wineAdded(.failure(error)):

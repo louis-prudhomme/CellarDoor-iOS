@@ -9,6 +9,7 @@ public enum WineInteractorError: ClientError {
     case invalidAbv
     case badData
     case bottlingLocationMissing
+    case pictureMissing
     case unknown
 
     public init(_: any Error) {
@@ -28,6 +29,7 @@ public enum WineInteractorError: ClientError {
             case .invalidAbv: "AbV must be between 0 and 100."
             case .badData: "Failed decoding data from the database."
             case .bottlingLocationMissing: "Bottling location is missing."
+            case .pictureMissing: "Picture is missing."
             case .unknown: "An unknown error occurred."
         }
     }
