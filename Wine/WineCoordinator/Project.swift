@@ -17,4 +17,4 @@ let project = Project.project(
   ```swift
   .module(at: "Wine/WineCoordinator"),
  ```
-  */
+ */
