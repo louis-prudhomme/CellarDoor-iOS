@@ -46,6 +46,7 @@ public struct WineFeatureAddWineView: View {
                 store.send(.submitButtonTapped)
             }
             .buttonStyle(.borderedProminent)
+            .controlSize(.large)
         }
         .alert($store.scope(state: \.alert, action: \.alert))
         .sheet(item: $store.scope(state: \.destination, action: \.destination)) { store in
