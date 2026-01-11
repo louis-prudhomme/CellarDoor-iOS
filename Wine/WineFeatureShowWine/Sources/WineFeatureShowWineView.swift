@@ -62,7 +62,8 @@ public struct WineFeatureShowWineView: View {
 
                 if !bottle.bottlingLocation.others.isEmpty {
                     Row(header: "Locality", text: bottle.bottlingLocation.others
-                        .joined(separator: ",\n"))
+                        .joined(separator: "\n"))
+                        .multilineTextAlignment(.trailing)
                 }
 
                 Button("Show on Map") {

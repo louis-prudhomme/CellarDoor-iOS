@@ -101,7 +101,7 @@ public struct WineFeatureOcrExtractedView: View {
                         Text("• \(text)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                            .frame(maxWidth: .infinity)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
             } label: {
