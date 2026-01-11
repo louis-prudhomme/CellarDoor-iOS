@@ -11,7 +11,11 @@ public struct ModelContainerConfigurator: Sendable {
         WineBottleEntity.self,
         WinemakerEntity.self,
         GrapeVarietyEntity.self,
-        WineBottlingLocationEntity.self
+        WineBottlingLocationEntity.self,
+        AppellationEntity.self,
+        RegionEntity.self,
+        VineyardEntity.self,
+        CountryEntity.self
     ]
 
     private static func makeContainer(inMemory: Bool = false) throws -> ModelContainer {

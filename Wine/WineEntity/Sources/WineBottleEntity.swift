@@ -17,8 +17,9 @@ public final class WineBottleEntity: IdentifiableEntity {
     @Relationship(deleteRule: .nullify) public var winemaker: WinemakerEntity?
     @Relationship(deleteRule: .nullify) public var grapeVarieties: [GrapeVarietyEntity]
     @Relationship(deleteRule: .nullify) public var bottlingLocation: WineBottlingLocationEntity
+    @Relationship(deleteRule: .nullify) public var appellation: AppellationEntity
 
-    public init(id: UUID, name: String, millesime: Int, abv: Double, picture: Data, bottlingLocation: WineBottlingLocationEntity, grapeVarieties: [GrapeVarietyEntity], createdAt: Date, winemaker: WinemakerEntity?) {
+    public init(id: UUID, name: String, millesime: Int, abv: Double, picture: Data, bottlingLocation: WineBottlingLocationEntity, grapeVarieties: [GrapeVarietyEntity], createdAt: Date, winemaker: WinemakerEntity?, appellation: AppellationEntity) {
         self.id = id
         self.name = name
         self.millesime = millesime
@@ -28,6 +29,7 @@ public final class WineBottleEntity: IdentifiableEntity {
         self.createdAt = createdAt
         self.winemaker = winemaker
         self.grapeVarieties = grapeVarieties
+        self.appellation = appellation
     }
 
     public static func idPredicate(for id: UUID) -> Predicate<WineBottleEntity> {
@@ -46,5 +48,6 @@ public extension WineBottleEntity {
         createdAt = entity.createdAt
         winemaker = entity.winemaker
         grapeVarieties = entity.grapeVarieties
+        appellation = entity.appellation
     }
 }

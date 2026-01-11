@@ -12,8 +12,9 @@ public struct WineBottle: Interactable {
     public let createdAt: Date
     public let winemaker: Winemaker? // TODO: a wine can probably have several winemakers
     public let grapeVarieties: [GrapeVariety]
+    public let appellation: Appellation
 
-    public init(id: UUID, name: String, millesime: Int, abv: Double, picture: Data, bottlingLocation: WineBottlingLocation, grapeVarieties: [GrapeVariety], winemaker: Winemaker?, createdAt: Date) {
+    public init(id: UUID, name: String, millesime: Int, abv: Double, picture: Data, bottlingLocation: WineBottlingLocation, grapeVarieties: [GrapeVariety], winemaker: Winemaker?, appellation: Appellation, createdAt: Date) {
         self.id = id
         self.name = name
         self.millesime = millesime
@@ -22,12 +23,13 @@ public struct WineBottle: Interactable {
         self.bottlingLocation = bottlingLocation
         self.winemaker = winemaker
         self.grapeVarieties = grapeVarieties
+        self.appellation = appellation
         self.createdAt = createdAt
     }
 }
 
 public extension WineBottle {
-    init(name: String, millesime: Int, abv: Double, picture: Data, bottlingLocation: WineBottlingLocation, grapeVarieties: [GrapeVariety], winemaker: Winemaker? = nil) {
+    init(name: String, millesime: Int, abv: Double, picture: Data, bottlingLocation: WineBottlingLocation, grapeVarieties: [GrapeVariety], winemaker: Winemaker? = nil, appellation: Appellation? = nil) {
         @Dependency(\.uuid) var uuid
         @Dependency(\.date) var date
 
@@ -40,6 +42,7 @@ public extension WineBottle {
             bottlingLocation: bottlingLocation,
             grapeVarieties: grapeVarieties,
             winemaker: winemaker,
+            appellation: appellation,
             createdAt: date()
         )
     }

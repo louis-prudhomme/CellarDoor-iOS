@@ -21,6 +21,7 @@ public extension WineBottleEntity {
             bottlingLocation: decodedLocation,
             grapeVarieties: grapeVarieties.map { $0.toDomain() },
             winemaker: winemaker?.toDomain(),
+            appellation: try appellation.toDomain(),
             createdAt: createdAt
         )
     }
@@ -82,7 +83,8 @@ public extension WineBottle {
             bottlingLocation: encodedLocation,
             grapeVarieties: grapeVarieties.map { $0.toEntity() },
             createdAt: createdAt,
-            winemaker: winemaker?.toEntity()
+            winemaker: winemaker?.toEntity(),
+            appellation: try appellation.toEntity()
         )
     }
 }
@@ -181,5 +183,95 @@ extension WineBottlingLocation.AdministrativeDivision.DivisionType: @retroactive
             case let .countyOrSmaller(importance): "countyOrSmaller_\(importance)"
         }
         try container.encode(rawValue)
+    }
+}
+
+// MARK: - Appellation, Region, Vineyard conversions
+
+public extension AppellationEntity {
+    func toDomain() throws -> Appellation {
+        try Appellation(
+            id: id,
+            name: name,
+            region: region.toDomain(),
+            createdAt: createdAt
+        )
+    }
+}
+
+public extension Appellation {
+    func toEntity() throws -> AppellationEntity {
+        try AppellationEntity(
+            id: id,
+            name: name,
+            region: region.toEntity(),
+            createdAt: createdAt
+        )
+    }
+}
+
+public extension RegionEntity {
+    func toDomain() throws -> Region {
+        try Region(
+            id: id,
+            name: name,
+            vineyard: vineyard.toDomain(),
+            createdAt: createdAt
+        )
+    }
+}
+
+public extension Region {
+    func toEntity() throws -> RegionEntity {
+        try RegionEntity(
+            id: id,
+            name: name,
+            vineyard: vineyard.toEntity(),
+            createdAt: createdAt
+        )
+    }
+}
+
+public extension VineyardEntity {
+    func toDomain() throws -> Vineyard {
+        Vineyard(
+            id: id,
+            name: name,
+            country: country.toDomain(),
+            createdAt: createdAt
+        )
+    }
+}
+
+public extension Vineyard {
+    func toEntity() throws -> VineyardEntity {
+        VineyardEntity(
+            id: id,
+            name: name,
+            country: country.toEntity(),
+            createdAt: createdAt
+        )
+    }
+}
+
+public extension CountryEntity {
+    func toDomain() -> Country {
+        Country(
+            id: id,
+            name: name,
+            code: code,
+            createdAt: createdAt
+        )
+    }
+}
+
+public extension Country {
+    func toEntity() -> CountryEntity {
+        CountryEntity(
+            id: id,
+            name: name,
+            code: code,
+            createdAt: createdAt
+        )
     }
 }
