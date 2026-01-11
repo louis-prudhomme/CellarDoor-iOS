@@ -39,17 +39,17 @@ extension WineInteractor {
             }
         },
         fetchAllWinemakers: { searchText in
-            @Dependency(\.wineRepository) var repository
+            @Dependency(\.winemakerRepository) var repository
 
             return await withResult(parser: WineInteractorError.init) { @MainActor in
-                try await repository.fetchAllWinemakers(searchText).map { $0.toDomain() }
+                try await repository.fetchAll(searchText).map { $0.toDomain() }
             }
         },
         fetchAllGrapeVarieties: { searchText in
-            @Dependency(\.wineRepository) var repository
+            @Dependency(\.grapeVarietyRepository) var repository
 
             return await withResult(parser: WineInteractorError.init) { @MainActor in
-                try await repository.fetchAllGrapeVarieties(searchText).map { $0.toDomain() }
+                try await repository.fetchAll(searchText).map { $0.toDomain() }
             }
         },
         fetch: { id in
@@ -90,26 +90,26 @@ extension WineInteractor {
             await sharedUpsert(wineBottle: domain)
         },
         upsertWinemaker: { winemaker in
-            @Dependency(\.wineRepository) var repository
+            @Dependency(\.winemakerRepository) var repository
 
             guard !winemaker.name.isEmpty else {
                 return .failure(WineInteractorError.nameEmpty)
             }
 
             return await withResult(parser: WineInteractorError.init) { @MainActor in
-                let entity = try await repository.upsertWinemaker(winemaker.toEntity())
+                let entity = try await repository.upsert(winemaker.toEntity())
                 return entity.toDomain()
             }
         },
         upsertGrapeVariety: { grapeVariety in
-            @Dependency(\.wineRepository) var repository
+            @Dependency(\.grapeVarietyRepository) var repository
 
             guard !grapeVariety.name.isEmpty else {
                 return .failure(WineInteractorError.nameEmpty)
             }
 
             return await withResult(parser: WineInteractorError.init) { @MainActor in
-                let entity = try await repository.upsertGrapeVariety(grapeVariety.toEntity())
+                let entity = try await repository.upsert(grapeVariety.toEntity())
                 return entity.toDomain()
             }
         },

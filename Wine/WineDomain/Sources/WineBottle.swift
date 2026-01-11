@@ -29,7 +29,7 @@ public struct WineBottle: Interactable {
 }
 
 public extension WineBottle {
-    init(name: String, millesime: Int, abv: Double, picture: Data, bottlingLocation: WineBottlingLocation, grapeVarieties: [GrapeVariety], winemaker: Winemaker? = nil, appellation: Appellation? = nil) {
+    init(name: String, millesime: Int, abv: Double, picture: Data, bottlingLocation: WineBottlingLocation, grapeVarieties: [GrapeVariety], winemaker: Winemaker?, appellation: Appellation) {
         @Dependency(\.uuid) var uuid
         @Dependency(\.date) var date
 

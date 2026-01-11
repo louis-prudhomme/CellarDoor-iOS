@@ -149,7 +149,7 @@ private extension WineFeatureShowWineView.Row where Label == Text {
             GrapeVariety(id: UUID(), name: "Merlot", createdAt: Date())
         ],
         winemaker: Winemaker(id: UUID(), name: "Château Margaux", createdAt: Date()),
-        appellation: Appellation(name: "Médoc", region: Region(name: "Medoc", vineyard: Vineyard(name: "Bordelais", countryCode: "FR"))),
+        appellation: Appellation(name: "Médoc", region: Region(name: "Medoc", vineyard: Vineyard(name: "Bordelais", country: Country(name: "France", code: "FR")))),
         createdAt: Date()
     )
     // swiftlint:enable use_dependency_for_date use_dependency_for_uuid
