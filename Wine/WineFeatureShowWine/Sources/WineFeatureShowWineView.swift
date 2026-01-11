@@ -1,4 +1,5 @@
 import SharedCommonArchitecture
+import SharedCommonDesignSystem
 import SwiftUI
 import WineDomain
 
@@ -15,6 +16,25 @@ public struct WineFeatureShowWineView: View {
 
     public var body: some View {
         Form {
+            Section {
+                if let image = Image(data: bottle.picture, label: "Photo of \(bottle.name)") {
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 200)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .frame(maxWidth: .infinity)
+                        .accessibilityLabel("Photo of \(bottle.name)")
+                } else {
+                    ContentUnavailableView(
+                        "No photo",
+                        systemImage: "photo",
+                        description: Text("This wine has no photo")
+                    )
+                    .frame(height: 120)
+                }
+            }
+
             Section(header: Text("Data")) {
                 Row(header: "Millesime", text: "\(bottle.millesime)")
 
