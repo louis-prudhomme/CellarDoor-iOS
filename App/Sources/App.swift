@@ -3,8 +3,12 @@ import SharedCommonArchitecture
 import SharedCommonModelContainer
 import SwiftUI
 
+#if WINE
+import WineCoordinator
+#endif
+
 @main
-struct CellarDoorApp: App {
+struct CentralDispatch: App {
     @State private var initializationError: (any Error)?
     @Dependency(\.modelContainerConfigurator) var modelContainerConfigurator
 
@@ -26,11 +30,15 @@ struct CellarDoorApp: App {
             if let error = initializationError {
                 ErrorView(error: error)
             } else {
-                AppCoordinatorView(
-                    store: Store(initialState: AppCoordinator.State()) {
-                        AppCoordinator()
+#if WINE
+                WineCoordinatorView(
+                    store: Store(initialState: WineCoordinator.State()) {
+                        WineCoordinator()
                     }
                 )
+#else
+                ErrorView(error: AppInitializationError.noFeatureEnabled)
+#endif
             }
         }
     }
@@ -61,4 +69,9 @@ private struct ErrorView: View {
         }
         .padding()
     }
+}
+
+enum AppInitializationError: Error {
+    case modelContainerInitializationFailed(String)
+    case noFeatureEnabled
 }

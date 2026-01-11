@@ -1,11 +1,11 @@
 import ProjectDescription
 
 let workspace = Workspace(
-    name: "CellarDoor",
+    name: "CentralDispatch",
     projects: [
         "./App",
         "./Shared/**",
-        // Mega
+        // Feature modules
         "./Wine/**"
     ]
 )

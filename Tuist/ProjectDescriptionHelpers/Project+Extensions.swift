@@ -48,7 +48,8 @@ public let commonSettings: SettingsDictionary = [
 public extension Project {
     static func app(
         name: String,
-        dependencies: [TargetDependency] = []
+        dependencies: [TargetDependency] = [],
+        additionnalInfoPlistEntries: [String: Plist.Value] = [:]
     ) -> Project {
         let sanitizedName = name.replacingOccurrences(of: " ", with: "")
 
@@ -60,9 +61,8 @@ public extension Project {
                 bundleId: "\(organization).\(sanitizedName)",
                 deploymentTargets: .iOS("17.0"),
                 infoPlist: .extendingDefault(with: [
-                    "UILaunchScreen": [:],
-                    "NSCameraUsageDescription": "We need access to your camera so you can capture wine bottle photos."
-                ]),
+                    "UILaunchScreen": [:]
+                ].merging(additionnalInfoPlistEntries) { _, new in new }),
                 sources: ["Sources/**"],
                 resources: ["Resources/**"],
                 scripts: [],
@@ -97,6 +97,91 @@ public extension Project {
             ),
             targets: targets
         )
+    }
+
+    static func app(target: AppTargetConfig) -> [Target] {
+        let sanitizedName = target.name.replacingOccurrences(of: " ", with: "")
+
+        let app = Target.target(
+            name: sanitizedName,
+            destinations: .iOS,
+            product: .app,
+            bundleId: "\(organization).\(sanitizedName)",
+            deploymentTargets: .iOS("17.0"),
+            infoPlist: .extendingDefault(with: [
+                "UILaunchScreen": [:]
+            ].merging(target.infoPlistExtensions) { _, new in new }),
+            sources: ["Sources/**"],
+            resources: ["Resources/**"],
+            scripts: [],
+            dependencies: target.dependencies,
+            settings: .settings(
+                base: commonSettings.merging([
+                    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": "$(inherited) \(target.compilerFlag)"
+                ]) { _, new in new },
+                configurations: configurations
+            )
+        )
+
+        let tests = Target.target(
+            name: "\(sanitizedName)Tests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "\(organization).\(sanitizedName)-Tests",
+            infoPlist: .default,
+            sources: ["Tests/**"],
+            dependencies: [
+                .target(name: sanitizedName)
+            ]
+        )
+
+        return [app, tests]
+    }
+
+    /// Create a multi-target app project with different build configurations
+    /// Each target shares the same source code but uses compiler flags for conditional compilation
+    static func multiTargetApp(
+        projectName: String,
+        targets: [AppTargetConfig]
+    ) -> Project {
+        let sanitizedProjectName = projectName.replacingOccurrences(of: " ", with: "")
+
+        let allTargets = targets.flatMap(Project.app)
+
+        return Project(
+            name: sanitizedProjectName,
+            organizationName: organization,
+            options: .options(
+                defaultKnownRegions: ["en"],
+                developmentRegion: "en"
+            ),
+            settings: .settings(
+                base: commonSettings,
+                configurations: configurations
+            ),
+            targets: allTargets
+        )
+    }
+}
+
+// MARK: - App Target Configuration
+
+public struct AppTargetConfig {
+    public let name: String
+    public let compilerFlag: String
+    public let infoPlistExtensions: [String: Plist.Value]
+    public let dependencies: [TargetDependency]
+
+    public init(
+        name: String,
+        compilerFlag: String,
+        infoPlistExtensions: [String: Plist.Value] = [:],
+        dependencies: [TargetDependency] = []
+    ) {
+        self.name = name
+        self.compilerFlag = compilerFlag
+        self.infoPlistExtensions = infoPlistExtensions
+        self.dependencies = dependencies
     }
 }
 

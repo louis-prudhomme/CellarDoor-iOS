@@ -2,6 +2,7 @@ import Dependencies
 import SwiftData
 import WineEntity
 
+// TODO: although placed SharedCommonModelContainer, this is the Wine app's => have a dynamic implementation per app
 public struct ModelContainerConfigurator: Sendable {
     public var initialize: @Sendable () throws -> ModelContainer
 
