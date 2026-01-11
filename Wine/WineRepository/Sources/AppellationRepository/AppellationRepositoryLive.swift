@@ -20,6 +20,26 @@ public extension AppellationRepository {
 
                 return try context.fetch(descriptor)
             },
+            fetchAllCountries: {
+                @Dependency(\.modelContainer) var container
+                let context = container.mainContext
+                let descriptor = FetchDescriptor<CountryEntity>(sortBy: [SortDescriptor(\.name)])
+                return try context.fetch(descriptor)
+            },
+            fetchAllVineyards: { countryId in
+                @Dependency(\.modelContainer) var container
+                let context = container.mainContext
+                let predicate = #Predicate<VineyardEntity> { $0.country.id == countryId }
+                let descriptor = FetchDescriptor<VineyardEntity>(predicate: predicate, sortBy: [SortDescriptor(\.name)])
+                return try context.fetch(descriptor)
+            },
+            fetchAllRegions: { vineyardId in
+                @Dependency(\.modelContainer) var container
+                let context = container.mainContext
+                let predicate = #Predicate<RegionEntity> { $0.vineyard.id == vineyardId }
+                let descriptor = FetchDescriptor<RegionEntity>(predicate: predicate, sortBy: [SortDescriptor(\.name)])
+                return try context.fetch(descriptor)
+            },
             upsertRegion: { proposed in
                 @Dependency(\.modelContainer) var container
                 let context = container.mainContext

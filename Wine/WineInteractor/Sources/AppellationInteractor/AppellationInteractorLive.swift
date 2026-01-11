@@ -24,6 +24,27 @@ extension AppellationInteractor {
                 return try entity.toDomain()
             }
         },
+        fetchAllCountries: {
+            @Dependency(\.appellationRepository) var repository
+
+            return await withResult(parser: WineInteractorError.init) { @MainActor in
+                try await repository.fetchAllCountries().map { $0.toDomain() }
+            }
+        },
+        fetchAllVineyards: { countryId in
+            @Dependency(\.appellationRepository) var repository
+
+            return await withResult(parser: WineInteractorError.init) { @MainActor in
+                try await repository.fetchAllVineyards(countryId).map { try $0.toDomain() }
+            }
+        },
+        fetchAllRegions: { vineyardId in
+            @Dependency(\.appellationRepository) var repository
+
+            return await withResult(parser: WineInteractorError.init) { @MainActor in
+                try await repository.fetchAllRegions(vineyardId).map { try $0.toDomain() }
+            }
+        },
         upsertRegion: { region in
             @Dependency(\.appellationRepository) var repository
 

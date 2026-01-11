@@ -7,6 +7,9 @@ import WineEntity
 public struct AppellationRepository: Sendable {
     public let base: BaseRepository<AppellationEntity>
     public let search: @MainActor @Sendable (String) async throws -> [AppellationEntity]
+    public let fetchAllCountries: @MainActor @Sendable () async throws -> [CountryEntity]
+    public let fetchAllVineyards: @MainActor @Sendable (UUID) async throws -> [VineyardEntity]
+    public let fetchAllRegions: @MainActor @Sendable (UUID) async throws -> [RegionEntity]
     public let upsertRegion: @MainActor @Sendable (RegionEntity) async throws -> RegionEntity
     public let upsertVineyard: @MainActor @Sendable (VineyardEntity) async throws -> VineyardEntity
     public let upsertCountry: @MainActor @Sendable (CountryEntity) async throws -> CountryEntity
