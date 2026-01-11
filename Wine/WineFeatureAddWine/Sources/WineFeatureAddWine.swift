@@ -12,10 +12,34 @@ public struct WineFeatureAddWine {
         var partialWine = PartialWineBottle()
         var isLoading = false
 
+        var ocrExtractedStrings = [String]()
+
         @Presents var alert: AlertState<Never>?
         @Presents var destination: Destination.State?
 
         public init() {}
+
+        /// Initialize with pre-filled data from OCR extraction
+        public init(
+            name: String = "",
+            millesime: Int? = nil,
+            abv: Double? = nil,
+            picture: Data? = nil,
+            extractedStrings: [String] = []
+        ) {
+            @Dependency(\.date) var date
+            @Dependency(\.calendar) var calendar
+
+            let currentYear = calendar.component(.year, from: date())
+
+            partialWine = PartialWineBottle(
+                name: name,
+                millesime: millesime ?? currentYear,
+                abv: abv ?? 12.5,
+                picture: picture
+            )
+            ocrExtractedStrings = extractedStrings
+        }
     }
 
     @Reducer

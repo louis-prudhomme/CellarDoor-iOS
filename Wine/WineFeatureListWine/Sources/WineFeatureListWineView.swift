@@ -37,13 +37,17 @@ public struct WineFeatureListWineView: View {
     }
 
     @ToolbarContentBuilder var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             Button("Return to Root", systemImage: "xmark") {
                 store.send(.delegate(.popToRoot))
             }
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItemGroup(placement: .topBarTrailing) {
+            Button("Scan wine label", systemImage: "camera.viewfinder") {
+                store.send(.delegate(.ocrButtonTapped))
+            }
+
             Button("Add a wine", systemImage: "plus") {
                 store.send(.delegate(.addButtonTapped))
             }

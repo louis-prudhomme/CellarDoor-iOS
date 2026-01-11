@@ -8,7 +8,8 @@ let project = Project.project(
         .module(at: "Shared/SharedCommonArchitecture"),
         .module(at: "Wine/WineFeatureListWine"),
         .module(at: "Wine/WineFeatureAddWine"),
-        .module(at: "Wine/WineFeatureShowWine")
+        .module(at: "Wine/WineFeatureShowWine"),
+        .module(at: "Wine/WineFeatureOcrWine")
     ]
 )
 

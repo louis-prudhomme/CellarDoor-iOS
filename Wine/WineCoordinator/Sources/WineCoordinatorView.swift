@@ -2,6 +2,7 @@ import SharedCommonArchitecture
 import SwiftUI
 import WineFeatureAddWine
 import WineFeatureListWine
+import WineFeatureOcrWine
 import WineFeatureShowWine
 
 public struct WineCoordinatorView: View {
@@ -22,6 +23,8 @@ public struct WineCoordinatorView: View {
                     WineFeatureAddWineView(store: store)
                 case let .showWine(store):
                     WineFeatureShowWineView(store: store)
+                case let .ocrWine(store):
+                    WineFeatureOcrWineView(store: store)
                 @unknown default:
                     Text("Unimplemented destination")
             }

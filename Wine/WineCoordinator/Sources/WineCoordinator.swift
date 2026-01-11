@@ -1,6 +1,7 @@
 import SharedCommonArchitecture
 import WineFeatureAddWine
 import WineFeatureListWine
+import WineFeatureOcrWine
 import WineFeatureShowWine
 
 @Reducer
@@ -16,6 +17,11 @@ public struct WineCoordinator {
     public enum Action {
         case list(WineFeatureListWine.Action)
         case destination(StackActionOf<Destination>)
+        case delegate(Delegate)
+    }
+
+    public enum Delegate {
+        case popToRoot
     }
 
     // MARK: - Destinations
@@ -24,6 +30,7 @@ public struct WineCoordinator {
     public enum Destination {
         case addWine(WineFeatureAddWine)
         case showWine(WineFeatureShowWine)
+        case ocrWine(WineFeatureOcrWine)
     }
 
     @Dependency(\.dismiss) var dismiss
@@ -43,13 +50,28 @@ public struct WineCoordinator {
                     state.destination.append(.addWine(WineFeatureAddWine.State()))
                     return .none
 
+                case .list(.delegate(.ocrButtonTapped)):
+                    state.destination.append(.ocrWine(WineFeatureOcrWine.State()))
+                    return .none
+
                 // MARK: - Leaf Actions
 
                 case .list(.delegate(.popToRoot)):
-                    return .run { [dismiss] _ in await dismiss() }
+                    // Send delegate action up to AppCoordinator
+                    return .send(.delegate(.popToRoot))
 
                 case let .list(.delegate(.wineTapped(wine))):
                     state.destination.append(.showWine(WineFeatureShowWine.State(bottle: wine)))
+                    return .none
+
+                case let .destination(.element(id: _, action: .ocrWine(.destination(.presented(.extracted(.delegate(.extractedDataConfirmed(extractedData)))))))):
+                    state.destination.append(.addWine(WineFeatureAddWine.State(
+                        name: extractedData.suggestedName ?? "",
+                        millesime: extractedData.millesime,
+                        abv: extractedData.abv,
+                        picture: extractedData.pictureData,
+                        extractedStrings: extractedData.extractedStrings
+                    )))
                     return .none
 
                 default:
