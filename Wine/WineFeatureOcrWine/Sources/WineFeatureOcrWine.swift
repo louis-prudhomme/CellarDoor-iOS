@@ -29,7 +29,9 @@ public struct WineFeatureOcrWine {
         case destination(PresentationAction<Destination.Action>)
 
         /// Handled by the Coordinator
-        public enum Delegate: Equatable {}
+        public enum Delegate: Equatable {
+            case extractedDataConfirmed(WineExtractedData)
+        }
     }
 
     public init() {}
@@ -102,6 +104,10 @@ public struct WineFeatureOcrWine {
                         TextState(error.localizedDescription)
                     }
                     return .none
+
+                case let .destination(.presented(.extracted(.delegate(.extractedDataConfirmed(extracted))))):
+                    state.destination = nil
+                    return .send(.delegate(.extractedDataConfirmed(extracted)))
 
                 case .destination(.presented(.extracted(.delegate(.retakeButtonTapped)))):
                     state.destination = nil

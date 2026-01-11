@@ -11,7 +11,7 @@ public struct WineFeatureOcrWineView: View {
 
     public var body: some View {
         captureView
-            .navigationDestination(item: $store.scope(state: \.destination?.extracted, action: \.destination.extracted)) { store in
+            .sheet(item: $store.scope(state: \.destination?.extracted, action: \.destination.extracted)) { store in
                 WineFeatureOcrExtractedView(store: store)
             }
             .navigationTitle("Scan Wine Bottle")

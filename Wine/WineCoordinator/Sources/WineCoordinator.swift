@@ -68,7 +68,7 @@ public struct WineCoordinator {
                     state.destination.removeAll()
                     return .none
 
-                case let .destination(.element(id: _, action: .ocrWine(.destination(.presented(.extracted(.delegate(.extractedDataConfirmed(extractedData)))))))):
+                case let .destination(.element(id: _, action: .ocrWine(.delegate(.extractedDataConfirmed(extractedData))))):
                     state.destination.append(.addWine(WineFeatureAddWine.State(
                         name: extractedData.suggestedName ?? "",
                         millesime: extractedData.millesime,

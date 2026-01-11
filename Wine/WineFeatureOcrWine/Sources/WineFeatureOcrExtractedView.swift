@@ -10,8 +10,18 @@ public struct WineFeatureOcrExtractedView: View {
     }
 
     public var body: some View {
-        extractionResultView(store.extractedData)
-            .navigationTitle("Scan Wine Bottle")
+        NavigationStack {
+            extractionResultView(store.extractedData)
+                .navigationTitle("Extracted Data")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            store.send(.delegate(.retakeButtonTapped))
+                        }
+                    }
+                }
+        }
     }
 
     @ViewBuilder
@@ -48,13 +58,14 @@ public struct WineFeatureOcrExtractedView: View {
                 store.send(.confirmExtractionButtonTapped)
             }
             .buttonStyle(.borderedProminent)
+            .controlSize(.large)
 
             Button { store.send(.delegate(.retakeButtonTapped)) } label: {
                 Label("Retake Photo", systemImage: "arrow.counterclockwise")
             }
             .buttonStyle(.bordered)
+            .controlSize(.large)
         }
-        .controlSize(.large)
     }
 
     @ViewBuilder
