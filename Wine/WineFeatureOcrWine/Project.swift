@@ -7,7 +7,8 @@ let project = Project.project(
     dependencies: [
         .module(at: "Shared/SharedCommonArchitecture"),
         .module(at: "Shared/SharedCommonDesignSystem"),
-        .module(at: "Shared/SharedCommonPictureClient")
+        .module(at: "Shared/SharedCommonPictureClient"),
+        .module(at: "Wine/WineCommonOcrClient")
     ]
 )
 

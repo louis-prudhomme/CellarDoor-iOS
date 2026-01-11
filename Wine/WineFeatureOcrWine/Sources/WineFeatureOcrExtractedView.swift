@@ -15,7 +15,7 @@ public struct WineFeatureOcrExtractedView: View {
     }
 
     @ViewBuilder
-    private func extractionResultView(_ extractedData: OcrExtractedData) -> some View {
+    private func extractionResultView(_ extractedData: WineExtractedData) -> some View {
         ScrollView {
             VStack(spacing: 20) {
                 capturedImageView
@@ -58,7 +58,7 @@ public struct WineFeatureOcrExtractedView: View {
     }
 
     @ViewBuilder
-    private func extractedDataSummary(_ extractedData: OcrExtractedData) -> some View {
+    private func extractedDataSummary(_ extractedData: WineExtractedData) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Extracted Information")
                 .font(.headline)
@@ -141,7 +141,7 @@ public struct WineFeatureOcrExtractedView: View {
         WineFeatureOcrExtractedView(
             store: Store(initialState: WineFeatureOcrExtracted.State(
                 capturedImage: Data(),
-                extractedData: OcrExtractedData(
+                extractedData: WineExtractedData(
                     millesime: 2_015,
                     abv: 13.5,
                     extractedStrings: [

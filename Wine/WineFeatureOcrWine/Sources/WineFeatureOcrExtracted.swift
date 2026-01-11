@@ -8,9 +8,9 @@ public struct WineFeatureOcrExtracted {
     @ObservableState
     public struct State: Equatable {
         var capturedImage: Data
-        var extractedData: OcrExtractedData
+        var extractedData: WineExtractedData
 
-        public init(capturedImage: Data, extractedData: OcrExtractedData) {
+        public init(capturedImage: Data, extractedData: WineExtractedData) {
             self.capturedImage = capturedImage
             self.extractedData = extractedData
         }
@@ -25,7 +25,7 @@ public struct WineFeatureOcrExtracted {
 
         /// Handled by the Coordinator
         public enum Delegate: Equatable {
-            case extractedDataConfirmed(OcrExtractedData)
+            case extractedDataConfirmed(WineExtractedData)
             case retakeButtonTapped
         }
     }

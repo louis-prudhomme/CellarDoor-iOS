@@ -1,6 +1,6 @@
 import Foundation
 
-public struct WineExtractedData: Equatable, Sendable {
+public struct OcrExtractedData: Equatable, Sendable {
     public var millesime: Int?
     public var abv: Double?
     public var extractedStrings: [String]
